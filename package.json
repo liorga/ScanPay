@@ -1,9 +1,10 @@
 {
   "name": "scanpay",
   "version": "1.0.0",
-  "description": "",
+  "description": "scan pay project lior and asa",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -11,10 +12,16 @@
     "url": "git+https://github.com/liorga/ScanPay.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "lior gal asa klein",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/liorga/ScanPay/issues"
   },
-  "homepage": "https://github.com/liorga/ScanPay#readme"
+  "homepage": "https://github.com/liorga/ScanPay#readme",
+  "dependencies": {
+    "config": "^1.29.4",
+    "express": "^4.17.1",
+    "mongoose": "^5.0.2",
+    "nodemon": "^2.0.12"
+  }
 }
