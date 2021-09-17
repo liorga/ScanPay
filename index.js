@@ -9,6 +9,7 @@ app.get('/', (req, res) => {
 });
 
 require('./services/routes')(app);
+require('./services/db')();
 
 const port = process.env.PORT || config.get('port');
 
