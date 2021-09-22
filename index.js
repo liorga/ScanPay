@@ -1,17 +1,21 @@
 const express = require('express');
 const config = require('config');
-const path = require('path');
 
 const app = express();
-
-app.get('/', (req, res) => {
-  res.sendFile(path.resolve('./pages/index.html'));
-});
-
-require('./services/routes')(app);
 require('./services/db')();
 
-const port = process.env.PORT || config.get('port');
-const server = app.listen(port, () => console.log(`Listening on port ${port}...`));
+const authRoute = require('./routes/auth');
+const verify = require('./routes/verifyToken');
 
-module.exports = server;
+app.get('/asa', verify, (req, res) => {
+  res.json({ secret: 42 });
+});
+
+app.use(express.json());
+app.use('/api/user', authRoute);
+
+const port = process.env.PORT || config.get('port');
+// const server =
+app.listen(port, () => console.log(`Listening on port ${port}...`));
+
+// module.exports = server;
