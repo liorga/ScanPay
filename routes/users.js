@@ -1,6 +1,7 @@
 const _ = require('lodash');
-const { User, validate } = require('../db_models/user');
 const express = require('express');
+const { User, validate } = require('../db_models/user');
+
 const router = express.Router();
 
 router.get('/', async (req, res) => {
@@ -9,6 +10,7 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/me', async (req, res) => {
+  // eslint-disable-next-line no-underscore-dangle
   const user = await User.findById(req.user._id).select('-password');
   res.send(user);
 });
@@ -27,6 +29,8 @@ router.post('/', async (req, res) => {
   res
     .header('x-auth-token', token)
     .send(_.pick(user, ['_id', 'name', 'email']));
+
+  return null;
 });
 
 module.exports = router;
