@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Page</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/styles/index.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="/scripts/index.js"></script>
+</head>
+
+<body>
+<!-- credit: https://codepen.io/andytran/pen/GpyKLM -->
+    <div class="form">
+        <div class="form-toggle"></div>
+        <div class="form-panel one">
+            <div class="form-header">
+                <h1>Account Login</h1>
+            </div>
+            <div class="form-content">
+                <form id="login_form" action="api/user/login">
+                    <div class="form-group">
+                        <label for="login_email">Email</label>
+                        <input type="email" id="login_email" name="email" required="required" />
+                    </div>
+                    <div class="form-group">
+                        <label for="login_password">Password</label>
+                        <input type="password" id="login_password" name="password" required="required" />
+                    </div>
+                    <div class="form-group">
+                        <a id="register" class="form-recovery" href="#">Don't have and account?</a>
+                        <p id="login_error" class="form-error"></p>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit">Log In</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="form-panel two">
+            <div class="form-header">
+                <h1>Register Account</h1>
+            </div>
+            <div class="form-content">
+                <form id="register_form" action="api/user/register">
+                    <div class="form-group">
+                        <label for="reg_name">Name</label>
+                        <input type="text" id="reg_name" name="name" required="required" />
+                    </div>
+                    <div class="form-group">
+                        <label for="reg_email">Email Address</label>
+                        <input type="email" id="reg_email" name="email" required="required" />
+                    </div>
+                    <div class="form-group">
+                        <label for="reg_password">Password</label>
+                        <input type="password" id="reg_password" name="password" required="required" />
+                    </div>
+                    <div class="form-group">
+                        <label for="cpassword">Confirm Password</label>
+                        <input type="password" id="cpassword" name="cpassword" required="required" />
+                    </div>
+                    <div class="form-group">
+                        <div>
+                            <label for="type">Type</label>
+                            <p id="reg_error" class="form-error" style="margin: 0; max-width: 200px; max-height: 30px;"></p>
+                        </div>
+                        <select name="userType" required>
+                            <option value="">Select...</option>
+                            <option value="client">Client</option>
+                            <option value="worker">Worker</option>
+                            <option value="manager">Manager</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button id="register_btn" type="submit">Register</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
