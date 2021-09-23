@@ -21,6 +21,11 @@ const UserSchema = new mongoose.Schema({
     min: 5,
     max: 1024,
   },
+  userType: {
+    type: String,
+    enum: ['client', 'worker', 'manager'],
+    default: 'client',
+  },
   isAdmin: Boolean,
 });
 
@@ -30,6 +35,7 @@ function registerValidation(user) {
     email: Joi.string().min(5).max(255).required()
       .email(),
     password: Joi.string().min(5).max(255).required(),
+    userType: Joi.string(),
   });
 
   return schema.validate(user);
