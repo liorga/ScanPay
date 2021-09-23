@@ -60,12 +60,6 @@
         //submit form
         $("#submit").click(function(){
             let arr = $("#submit_form").serialize();
-             
-            // arr.reduce(function(result, value, index, array) {
-            //     if (index % 2 === 0)
-            //     result.push(array.slice(index, index + 2));
-            //     return result;
-            // }, []);
             console.log(arr);
             $.post($("#submit_form").attr('action'),arr);
         });

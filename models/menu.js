@@ -20,7 +20,6 @@ const menuSchema = new mongoose.Schema({
   ],
 });
 
-
 // function validateOrder(order) {
 //   const schema = {
 //     id: Joi.number().min(0).max(255).required(),
