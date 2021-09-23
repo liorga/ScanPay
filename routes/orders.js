@@ -1,23 +1,21 @@
-
 const path = require('path');
-var express = require('express')
-var bodyParser = require('body-parser')
+var express = require('express');
+var bodyParser = require('body-parser');
 
-var app = express()
+var app = express();
 
 // create application/json parser
-var jsonParser = bodyParser.json()
-var urlencodedParser = bodyParser.urlencoded({ extended: false })
+var jsonParser = bodyParser.json();
+var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
-const { Order, validate } = require('../db_models/order');
+const { Order, validate } = require('../models/order');
 
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-   const users = await Order.find();
+  const users = await Order.find();
 
-   res.send(users);
-  
+  res.send(users);
 });
 
 router.get('/:id', async (req, res) => {
@@ -30,7 +28,7 @@ router.get('/:id', async (req, res) => {
   res.send(order);
 });
 
-router.post('/',urlencodedParser, async (req, res) => {
+router.post('/', urlencodedParser, async (req, res) => {
   // const { error } = validate(req.body);
   // if (error) return res.status(400).send(error.details[0].message);
    //var formData = JSON.stringify($("#myForm").serializeArray());
