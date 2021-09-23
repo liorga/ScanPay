@@ -29,6 +29,11 @@ app.get('/', (req, res) => {
   }
 });
 
+app.get('/profile/newItem', (req, res) => {
+  res.sendFile(path.resolve('./public/pages/newItem.html'));
+});
+
+
 require('./services/routes')(app);
 
 const port = process.env.PORT || config.get('port');

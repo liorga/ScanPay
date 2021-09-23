@@ -5,9 +5,9 @@ const { Order, validate } = require('../models/order');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-  const users = await Order.find();
+  const orders = await Order.find();
 
-  res.send(users);
+  res.send(orders);
 });
 
 router.get('/:id', async (req, res) => {
