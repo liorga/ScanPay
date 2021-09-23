@@ -10,6 +10,7 @@ app.get('/', (req, res) => {
   res.sendFile(path.resolve("./public/html/index.html"));
 });
 
+
 require('./services/routes')(app);
 require('./services/db')();
 
