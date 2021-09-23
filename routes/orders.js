@@ -1,12 +1,4 @@
-const path = require('path');
-var express = require('express');
-var bodyParser = require('body-parser');
-
-var app = express();
-
-// create application/json parser
-var jsonParser = bodyParser.json();
-var urlencodedParser = bodyParser.urlencoded({ extended: false });
+const express = require('express');
 
 const { Order, validate } = require('../models/order');
 
@@ -25,14 +17,14 @@ router.get('/:id', async (req, res) => {
     return res.status(404).send('The order with the ID was not found.');
   }
 
-  res.send(order);
+  return res.send(order);
 });
 
-router.post('/', urlencodedParser, async (req, res) => {
+router.post('/', async (req, res) => {
   // const { error } = validate(req.body);
   // if (error) return res.status(400).send(error.details[0].message);
-   //var formData = JSON.stringify($("#myForm").serializeArray());
-   console.log(req.body);
+  // var formData = JSON.stringify($("#myForm").serializeArray());
+  console.log(req.body);
   // let order = new Order({
   //   id: req.body.id,
   //   items: req.body.items,
@@ -54,7 +46,7 @@ router.put('/:id', async (req, res) => {
     return res.status(404).send('The order with the ID was not found.');
   }
 
-  res.send(order);
+  return res.send(order);
 });
 
 router.delete('/:id', async (req, res) => {
@@ -64,7 +56,7 @@ router.delete('/:id', async (req, res) => {
     return res.status(404).send('The order with the ID was not found.');
   }
 
-  res.send(order);
+  return res.send(order);
 });
 
 module.exports = router;
