@@ -1,34 +1,74 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Add Menu</title>
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <body>
-    <h1>items</h1>
-    <form action="/api/orders" method="POST" id="myForm">
-        <div>
-            <label for="name">Name</label>
-            <input type="text" name="name" id="name">
+    <div class="container"style="max-width: 700px;">
+
+        <div class="text-center" style="margin: 20px 0px 20px 0px;">
+            <span class="text-secondary">Add or Remove </span>
         </div>
 
-        <div>
-            <label for="price">Price</label>
-            <input type="number" name="price" id="price">
-        </div>
+        <form id="submit_form" method="post" action="/api/menu">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div id="inputFormRow">
+                        <div class="input-group mb-3">
+                            <input type="text" name="name" class="form-control m-input" placeholder="Enter item" autocomplete="off">
+                            <input type="number" name="price" class="form-control m-input" placeholder="Enter price" autocomplete="off">
+                            <div class="input-group-append">                
+                                <button id="removeRow" type="button" class="btn btn-danger">Remove</button>
+                            </div>
+                        </div>
+                    </div>
 
-        <div>
-            <label for="quantity">Quantity </label>
-            <input type="number" name="quantity" id="quantity">
-        </div>
+                    <div id="newRow"></div>
+                    <button id="addRow" type="button" class="btn btn-info">Add Row</button>
+                    <button id="submit" type="button" class="btn btn-info">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
 
-        <div>
-            <button type="submit">Submit</button>
-        </div>
+    <script type="text/javascript">
+        // add row
+        $("#addRow").click(function () {
+            var html = '';
+            html += '<div id="inputFormRow">';
+            html += '<div class="input-group mb-3">';
+            html += '<input type="text" name="name" class="form-control m-input" placeholder="Enter title" autocomplete="off">';
+            html += '<input type="number" name="price" class="form-control m-input" placeholder="Enter price" autocomplete="off">';
+            html += '<div class="input-group-append">';
+            html += '<button id="removeRow" type="button" class="btn btn-danger">Remove</button>';
+            html += '</div>';
+            html += '</div>';
 
-    </form>
-    <script src="../scripts/items.js"></script>
+            $('#newRow').append(html);
+        });
+
+        // remove row
+        $(document).on('click', '#removeRow', function () {
+            $(this).closest('#inputFormRow').remove();
+        });
+
+        //submit form
+        $("#submit").click(function(){
+            let arr = $("#submit_form").serialize();
+             
+            // arr.reduce(function(result, value, index, array) {
+            //     if (index % 2 === 0)
+            //     result.push(array.slice(index, index + 2));
+            //     return result;
+            // }, []);
+            console.log(arr);
+            $.post($("#submit_form").attr('action'),arr);
+        });
+    </script>
 </body>
 </html>
