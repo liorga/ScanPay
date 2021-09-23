@@ -2,6 +2,7 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const path = require('path');
 const { User } = require('../models/user');
+const sendErrorPage = require('../services/utils');
 
 const router = express.Router();
 const verify = require('./verifyToken');
@@ -20,7 +21,7 @@ router.get('/', verify, async (req, res) => {
       res.sendFile(path.resolve('./public/pages/managerProfile.html'));
       break;
     default:
-      res.status(404).send();
+      sendErrorPage(404, 'Not Found', res);
   }
 });
 
