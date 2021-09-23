@@ -19,6 +19,8 @@ app.use(express.static(path.join(__dirname, '/public')));
 app.use('/api/user', authRoute);
 app.use('/profile', usersRoute);
 
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.get('/', (req, res) => {
   if (req.cookies['auth-token']) {
     res.redirect('profile');
@@ -26,6 +28,8 @@ app.get('/', (req, res) => {
     res.sendFile(path.resolve('./public/pages/index.html'));
   }
 });
+
+require('./services/routes')(app);
 
 const port = process.env.PORT || config.get('port');
 app.listen(port, () => console.log(`Listening on port ${port}...`));
