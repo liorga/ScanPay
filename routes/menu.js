@@ -13,23 +13,23 @@ router.post('/', async (req, res) => {
   // const { error } = validate(req.body);
   // if (error) return res.status(400).send(error.details[0].message);
   console.log(req.body);
-  let names = req.body.name;
-  let prices = req.body.price;
+  const names = req.body.name;
+  const prices = req.body.price;
   const mapArrays = (names, prices) => {
     const res = [];
-    for(let i = 0; i < names.length; i++){
-       res.push({
-          name: names[i],
-          price: prices[i]
-       });
-    };
+    for (let i = 0; i < names.length; i++) {
+      res.push({
+        name: names[i],
+        price: prices[i],
+      });
+    }
     return res;
- };
- console.log(mapArrays(names, prices));
-    let menu = new Menu({
-      items: mapArrays(names, prices),
-    });
-    menu = await menu.save();
+  };
+  console.log(mapArrays(names, prices));
+  let menu = new Menu({
+    items: mapArrays(names, prices),
+  });
+  menu = await menu.save();
 
   res.send(menu);
 });
