@@ -21,16 +21,16 @@ router.get('/:id', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-  // const { error } = validate(req.body);
-  // if (error) return res.status(400).send(error.details[0].message);
-  console.log(req.body);
-  // let order = new Order({
-  //   id: req.body.id,
-  //   items: req.body.items,
-  // });
-  // order = await order.save();
+  const data = JSON.parse(req.body.items);
+  const { error } = validate(data);
+  if (error) return res.status(400).send(error.details[0].message);
 
-  // res.send(order);
+  let order = new Order({
+    items: data,
+  });
+  order = await order.save();
+
+  res.send(order);
 });
 
 router.put('/:id', async (req, res) => {

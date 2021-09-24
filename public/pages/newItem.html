@@ -52,37 +52,37 @@
       });
 
       //submit form
-      const names = [];
-      const prices = [];
-      const qtys = [];
+      const order = [];
 
       $('#submit').click(function () {
         $('input[name="name"]').each(function getItems() {
-          prices.push({
+          order.push({
             name: $(this).val(),
             price: $(this).parent().next().children()[0].value,
             qty: $(this).parent().next().next().children()[0].value,
           });
         });
 
-        console.log(names, prices, qtys);
-        // $.post(
-        //   '/api/orders',
-        //   { items: JSON.stringify(menu) },
-        //   () => {
-        //     showToast('Menu saved');
-        //   },
-        //   'html'
-        // ).fail((err) => {
-        //   showToast('Error with sanding the order');
-        // });
+        //console.log(order);
+        $.post(
+          '/api/orders',
+          { items: JSON.stringify(order) },
+          () => {
+            //showToast('order sent');
+            console.log('order sent');
+          },
+          'html'
+        ).fail((err) => {
+          //showToast('Error with sanding the order');
+          console.log('order failed');
+        });
       });
 
       async function getMenu() {
         try {
           const response = await fetch('/api/menu');
           const data = await response.json();
-          console.log(data);
+          //console.log(data);
           data.forEach((item) =>
             $('#myTable').append(`
               <tr>

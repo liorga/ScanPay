@@ -1,4 +1,4 @@
-// const Joi = require('joi');
+const Joi = require('joi');
 const mongoose = require('mongoose');
 
 const orderSchema = new mongoose.Schema({
@@ -7,7 +7,7 @@ const orderSchema = new mongoose.Schema({
       name: {
         type: String,
         required: true,
-        minlength: 3,
+        minlength: 1,
         maxlength: 255,
       },
       price: {
@@ -26,16 +26,20 @@ const orderSchema = new mongoose.Schema({
   ],
 });
 
-const Order = mongoose.model('Order', orderSchema);
+function validateOrder(order) {
+  const schema = Joi.object({
+    items: Joi.array()
+      .required()
+      .items({
+        name: Joi.string().min(1).max(255).required(),
+        price: Joi.number().min(0).max(1000).required(),
+        qty: Joi.number().min(0).max(100).required(),
+      }),
+  });
 
-// function validateOrder(order) {
-//   const schema = {
-//     id: Joi.number().min(0).max(255).required(),
-//   };
+  return schema.validate({ items: order });
+}
 
-//   return Joi.validate(order, schema);
-// }
+exports.validate = validateOrder;
 
-// exports.validate = validateOrder;
-
-exports.Order = Order;
+module.exports.Order = mongoose.model('Order', orderSchema);
