@@ -1,97 +1,112 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
     <title>Add Menu</title>
 
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-</head>
+    <link
+      rel="stylesheet"
+      href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    />
+    <link
+      href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
+  </head>
 
-<body>
-    <div class="container" style="max-width: 700px;">
-
-        <div class="text-center" style="margin: 20px 0px 20px 0px;">
-            <span class="text-secondary">Add or Remove </span>
-        </div>
-
-        <form id="submit_form" method="post" action="/api/menu">
-            <table class="table" id="myTable">
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Quantity</th>
-                 
-                  </tr>
-                </thead>
-                <tbody>  
-                  <tr>
-                    <th scope="row"></th>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-                </table>
-                    <div id="newRow"></div>
-                    <button id="addRow" type="button" class="btn btn-info">Add Row</button>
-                    <button id="submit" type="button" class="btn btn-info">Submit</button>
-                </div>
-            </div>
-        </form>
+  <body>
+    <div class="container" style="max-width: 700px">
+      <div class="text-center" style="margin: 20px 0px 20px 0px">
+        <span class="text-secondary">Add or Remove </span>
+      </div>
+      <form id="order_form">
+        <table class="table" id="myTable">
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Price</th>
+              <th scope="col">Quantity</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr></tr>
+          </tbody>
+        </table>
+        <div id="newRow"></div>
+        <button id="submit" type="button" class="btn btn-info">Submit</button>
+      </form>
     </div>
 
     <script type="text/javascript">
-        // add row
-        $("#addRow").click(function () {
-            var html = '';
-            html += '<div id="inputFormRow">';
-            html += '<div class="input-group mb-3">';
-            html += '<input type="text" name="name" class="form-control m-input" placeholder="Enter title" autocomplete="off">';
-            html += '<input type="number" name="price" class="form-control m-input" placeholder="Enter price" autocomplete="off">';
-            html += '<div class="input-group-append">';
-            html += '<button id="removeRow" type="button" class="btn btn-danger">Remove</button>';
-            html += '</div>';
-            html += '</div>';
+      // remove row
+      $(document).on('click', '#removeRow', function () {
+        $(this).closest('#inputFormRow').remove();
+      });
 
-            $('#newRow').append(html);
+      //submit form
+      const names = [];
+      const prices = [];
+      const qtys = [];
+
+      $('#submit').click(function () {
+        $('input[name="name"]').each(function getItems() {
+          prices.push({
+            name: $(this).val(),
+            price: $(this).parent().next().children()[0].value,
+            qty: $(this).parent().next().next().children()[0].value,
+          });
         });
 
-        // remove row
-        $(document).on('click', '#removeRow', function () {
-            $(this).closest('#inputFormRow').remove();
-        });
+        console.log(names, prices, qtys);
+        // $.post(
+        //   '/api/orders',
+        //   { items: JSON.stringify(menu) },
+        //   () => {
+        //     showToast('Menu saved');
+        //   },
+        //   'html'
+        // ).fail((err) => {
+        //   showToast('Error with sanding the order');
+        // });
+      });
 
-        //submit form
-        $("#submit").click(function () {
-            let arr = $("#submit_form").serialize();
-            console.log(arr);
-            $.post($("#submit_form").attr('action'), arr);
-        });
+      async function getMenu() {
+        try {
+          const response = await fetch('/api/menu');
+          const data = await response.json();
+          console.log(data);
+          data.forEach((item) =>
+            $('#myTable').append(`
+              <tr>
+                  <td>
+                      <input type="text" class="w-5 " name="name" disabled value=${item.name}>
+                  </td>
 
-        async function getMenu() {
-            try{
-                const response = await fetch('/api/menu');
-                const data = await response.json();
-                console.log(data);
-            }catch(err){
-                console.log(err.message);
-            }
+                  <td>
+                      <input type="text" class="w-5 " name="price" disabled value=${item.price}>
+                  </td>
+
+                  <td>
+              
+                      <input type="number" class="count w-25 p-1" min='0' name="qty" value="0">
+              
+                  </td>
+                </tr>
+              `)
+          );
+        } catch (err) {
+          console.log(err.message);
         }
-        getMenu();
-        // $(document).ready(() => {
-        //     $.get('/api/menu', (data, status) => {
-        //         if (status === 'success') {
-        //         // data.forEach((e) => $('#myTable').append(newItem(e.name, e.price)));
-        //         console.log(JSON.stringify(data));
-        //         }
-        //     });
-        // })
+      }
+      getMenu();
     </script>
-</body>
-
+  </body>
 </html>
