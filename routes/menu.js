@@ -9,7 +9,7 @@ const router = express.Router();
 router.get('/', verify, async (req, res) => {
   const user = await User.findOne({ _id: jwt.decode(req.cookies['auth-token']).id });
   const menu = await Menu.findOne({ owner: user.email });
-  res.send(menu.items);
+  res.send(menu ? menu.items : null);
 });
 
 router.post('/', verify, async (req, res) => {
@@ -48,14 +48,15 @@ router.post('/', verify, async (req, res) => {
 //   return res.send(menu);
 // });
 
-router.delete('/:id', async (req, res) => {
-  const menu = await Menu.findByIdAndRemove(req.params.id);
+router.delete('/', verify, async (req, res) => {
+  const user = await User.findOne({ _id: jwt.decode(req.cookies['auth-token']).id });
+  const menu = await Menu.findOneAndRemove({ owner: user.email });
 
   if (!menu) {
-    return res.status(404).send('The order with the ID was not found.');
+    return res.status(404).send('There is now such menu');
   }
 
-  return res.send(menu);
+  return res.send('Done');
 });
 
 module.exports = router;

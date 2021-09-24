@@ -5,7 +5,7 @@ function showToast(text) {
   setTimeout(() => { toast.className = toast.className.replace('show', ''); }, 3000);
 }
 
-function newRow(name = '', price = null) {
+function newRow(name = '', price = '') {
   return `<div class="input-group row m-1">
             <input type="text" name="name" class="form-control w-50" placeholder="Item" autocomplete="off" required="required" value=${name}>
             <input type="number" min="0" max="1000" name="price" class="form-control w-25" placeholder="Price" autocomplete="off" required="required" value=${price}>
@@ -17,7 +17,7 @@ function newRow(name = '', price = null) {
 
 $(document).ready(() => {
   $.get('/api/menu', (data, status) => {
-    if (status === 'success') {
+    if (status === 'success' && data.length > 0) {
       data.forEach((e) => $('#menu_form').append(newRow(e.name, e.price)));
     }
   });
@@ -50,6 +50,20 @@ $(document).ready(() => {
     } else {
       $('#menu_form')[0].reportValidity();
     }
+  });
+
+  $('#delete').click(() => {
+    $.ajax({
+      url: '/api/menu',
+      type: 'DELETE',
+      success: () => {
+        $('.input-group.row.m-1').remove();
+        showToast('Menu deleted');
+      },
+      error: () => {
+        showToast('Cant delete the menu');
+      },
+    });
   });
 
   $(document).on('click', '#removeRow', (e) => {
