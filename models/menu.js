@@ -27,7 +27,7 @@ const menuSchema = new mongoose.Schema({
   ],
 });
 
-function validateOrder(order, mail) {
+function validateMenu(order, mail) {
   const schema = Joi.object({
     owner: Joi.string().min(5).max(255).required()
       .email(),
@@ -40,6 +40,6 @@ function validateOrder(order, mail) {
   return schema.validate({ owner: mail, items: order });
 }
 
-exports.validate = validateOrder;
+exports.validate = validateMenu;
 
 module.exports.Menu = mongoose.model('Menu', menuSchema);
