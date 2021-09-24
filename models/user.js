@@ -26,6 +26,9 @@ const UserSchema = new mongoose.Schema({
     enum: ['client', 'worker', 'manager'],
     default: 'client',
   },
+  workers: {
+    type: [String],
+  },
   isAdmin: Boolean,
 });
 

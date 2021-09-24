@@ -55,12 +55,21 @@
 
     <div class="content-container h-100">
         <div class="row mw-100 h-100">
-            <div class="container-fluid col-md-5 p-0">
-                <fieldset class="jumbotron p-0">
-                    <legend class="pb-5">Workers</legend>
-                    <div>
-                    </div>
-                </fieldset>
+            <div class="container-fluid col-md-5 p-0 h-100">
+                <div class="jumbotron pt-4 px-3" style="height: 90%; overflow: auto;">
+                    <form id="workers">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Workers Management</span>
+                        </div>
+                        <div class="input-group row m-1">
+                            <input type="email" name="email" class="form-control w-75"
+                                placeholder="Worker's email address" autocomplete="off" required="required">
+                            <div class="input-group-append w-25">
+                                <button id="addWorker" type="button" class="btn btn-outline-success">Add</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
 
             <div class="container-fluid col-md-5 p-0 h-100">
@@ -69,7 +78,7 @@
                         <div class="input-group mb-3">
                             <span class="input-group-text">Menu</span>
                             <div class="input-group-append">
-                                <button id="addRow" type="button" class="btn btn-outline-primary">Add Item</button>
+                                <button id="addItem" type="button" class="btn btn-outline-primary">Add Item</button>
                                 <button id="submit" type="button" class="btn btn-outline-success">Save Menu</button>
                                 <button id="delete" type="button" class="btn btn-outline-danger">Delete Menu</button>
                             </div>

@@ -5,7 +5,7 @@ function showToast(text) {
   setTimeout(() => { toast.className = toast.className.replace('show', ''); }, 3000);
 }
 
-function newRow(name = '', price = '') {
+function newItem(name = '', price = '') {
   return `<div class="input-group row m-1">
             <input type="text" name="name" class="form-control w-50" placeholder="Item" autocomplete="off" required="required" value=${name}>
             <input type="number" min="0" max="1000" name="price" class="form-control w-25" placeholder="Price" autocomplete="off" required="required" value=${price}>
@@ -15,10 +15,19 @@ function newRow(name = '', price = '') {
           </div>`;
 }
 
+function newWorker() {
+  return `<div class="input-group row m-1">
+            <input type="email" name="email" class="form-control w-50" placeholder="Worker's email address" required="required">
+            <div class="input-group-append w-25">
+                <button id="addWorker" type="button" class="btn btn-outline-success">Add</button>
+            </div>
+          </div>`;
+}
+
 $(document).ready(() => {
   $.get('/api/menu', (data, status) => {
     if (status === 'success' && data.length > 0) {
-      data.forEach((e) => $('#menu_form').append(newRow(e.name, e.price)));
+      data.forEach((e) => $('#menu_form').append(newItem(e.name, e.price)));
     }
   });
 
@@ -26,8 +35,8 @@ $(document).ready(() => {
     document.cookie = 'auth-token=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
   });
 
-  $('#addRow').click(() => {
-    $('#menu_form').append(newRow());
+  $('#addItem').click(() => {
+    $('#menu_form').append(newItem());
   });
 
   $('#submit').click(() => {
@@ -67,6 +76,26 @@ $(document).ready(() => {
   });
 
   $(document).on('click', '#removeRow', (e) => {
+    e.target.parentElement.parentElement.remove();
+  });
+
+  $(document).on('click', '#addWorker', (e) => {
+    if ($('#workers')[0].checkValidity()) {
+      $.post('/api/user/worker', { email: $(e.target.parentElement).prev().val() }, () => {
+        $(e.target).addClass('btn-outline-danger').removeClass('btn-outline-success')[0].innerText = 'Remove';
+        $(e.target).attr('id', 'removeWorker');
+        $(e.target.parentElement).prev().attr('disabled', 'disabled').removeAttr('required');
+        $('#workers').append(newWorker());
+      }, 'html')
+        .fail((err) => {
+          showToast(err.responseText);
+        });
+    } else {
+      $('#workers')[0].reportValidity();
+    }
+  });
+
+  $(document).on('click', '#removeWorker', (e) => {
     e.target.parentElement.parentElement.remove();
   });
 });

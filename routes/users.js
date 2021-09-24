@@ -25,4 +25,17 @@ router.get('/', verify, async (req, res) => {
   }
 });
 
+router.post('/worker', verify, async (req, res) => {
+  const user = await User.findOne({ _id: jwt.decode(req.cookies['auth-token']).id });
+  if (user.userType !== 'manager') return res.status(403).send('Must be a manager');
+
+  const worker = await User.findOne({ email: req.body.email });
+  if (!worker || worker.userType !== 'worker') return res.status(404).send('Worker not found');
+
+  user.workers.push(worker._id);
+  user.save();
+
+  return res.send();
+});
+
 module.exports = router;

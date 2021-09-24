@@ -21,6 +21,7 @@ app.use(express.static(path.join(__dirname, '/public')));
 app.use('/api/user', authRoute);
 app.use('/api/orders', ordersRoutes);
 app.use('/api/menu', menu);
+app.use('/api/user', usersRoute);
 app.use('/profile', usersRoute);
 
 app.use(express.static(path.join(__dirname, 'public')));
