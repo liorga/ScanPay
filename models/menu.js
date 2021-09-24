@@ -1,7 +1,14 @@
-// const Joi = require('joi');
+const Joi = require('joi');
 const mongoose = require('mongoose');
 
 const menuSchema = new mongoose.Schema({
+  owner: {
+    type: String,
+    required: true,
+    min: 5,
+    max: 255,
+    unique: true,
+  },
   items: [
     {
       name: {
@@ -20,14 +27,19 @@ const menuSchema = new mongoose.Schema({
   ],
 });
 
-// function validateOrder(order) {
-//   const schema = {
-//     id: Joi.number().min(0).max(255).required(),
-//   };
+function validateOrder(order, mail) {
+  const schema = Joi.object({
+    owner: Joi.string().min(5).max(255).required()
+      .email(),
+    items: Joi.array().required().items({
+      name: Joi.string().min(1).max(255).required(),
+      price: Joi.number().min(1).max(1000).required(),
+    }),
+  });
 
-//   return Joi.validate(order, schema);
-// }
+  return schema.validate({ owner: mail, items: order });
+}
 
-// exports.validate = validateOrder;
+exports.validate = validateOrder;
 
 module.exports.Menu = mongoose.model('Menu', menuSchema);

@@ -1,37 +1,36 @@
 const express = require('express');
-
-const { Menu } = require('../models/menu');
+const jwt = require('jsonwebtoken');
+const verify = require('./verifyToken');
+const { Menu, validate } = require('../models/menu');
+const { User } = require('../models/user');
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
-  const menu = await Menu.find();
-  res.send(menu);
+router.get('/', verify, async (req, res) => {
+  const user = await User.findOne({ _id: jwt.decode(req.cookies['auth-token']).id });
+  const menu = await Menu.findOne({ owner: user.email });
+  res.send(menu.items);
 });
 
-router.post('/', async (req, res) => {
-  // const { error } = validate(req.body);
-  // if (error) return res.status(400).send(error.details[0].message);
-  console.log(req.body);
-  const names = req.body.name;
-  const prices = req.body.price;
-  const mapArrays = (names, prices) => {
-    const res = [];
-    for (let i = 0; i < names.length; i++) {
-      res.push({
-        name: names[i],
-        price: prices[i],
-      });
-    }
-    return res;
-  };
-  console.log(mapArrays(names, prices));
-  let menu = new Menu({
-    items: mapArrays(names, prices),
-  });
-  menu = await menu.save();
+router.post('/', verify, async (req, res) => {
+  try {
+    const data = JSON.parse(req.body.items);
+    const user = await User.findOne({ _id: jwt.decode(req.cookies['auth-token']).id });
+    if (user.userType !== 'manager') return res.status(403).send('Must be a manager');
 
-  res.send(menu);
+    const { error } = validate(data, user.email);
+    if (error) return res.status(400).send(error.details[0].message);
+
+    let menu = new Menu({
+      owner: user.email,
+      items: data,
+    });
+
+    menu = await menu.save();
+    return res.send(menu);
+  } catch (err) {
+    return res.status(400).send(err);
+  }
 });
 
 // router.put('/:id', async (req, res) => {

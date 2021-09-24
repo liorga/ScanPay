@@ -22,7 +22,7 @@
             ScanPay
         </div>
         <ul class="sidebar-navigation">
-            <li class="header">Orders</li>
+            <li class="header">Menu</li>
             <li>
                 <a href="/newItem">
                     New Order
@@ -31,6 +31,17 @@
             <li>
                 <a href="#">
                     Existing Orders
+                </a>
+            </li>
+            <li class="header">Workers</li>
+            <li>
+                <a href="#">
+                    Add Worker
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    Remove Worker
                 </a>
             </li>
             <li class="header">Management</li>
@@ -43,21 +54,31 @@
     </div>
 
     <div class="content-container">
+        <div class="row mw-100">
+            <div class="container-fluid col-md-5 p-0">
+                <fieldset class="jumbotron p-0">
+                    <legend class="pb-5">Workers</legend>
+                    <div>
+                    </div>
+                </fieldset>
+            </div>
 
-        <div class="container-fluid">
+            <div class="container-fluid col-md-5 p-0">
+                <div class="jumbotron pt-4 px-3">
+                    <form id="menu_form">
 
-            <!-- Main component for a primary marketing message or call to action -->
-            <div class="jumbotron">
-                <h1>Navbar example</h1>
-                <p>This example is a quick exercise to illustrate how the default, static and fixed to top navbar work.
-                    It
-                    includes the responsive CSS and HTML, so it also adapts to your viewport and device.</p>
-                <p>To see the difference between static and fixed top navbars, just scroll.</p>
-                <p>
-                    <a class="btn btn-lg btn-primary" href="../../components/#navbar" role="button">View navbar docs
-                        &raquo;</a>
-                </p>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Menu</span>
+                            <div class="input-group-append">
+                                <button id="addRow" type="button" class="btn btn-outline-primary">Add Item</button>
+                                <button id="submit" type="button" class="btn btn-outline-success">Save Menu</button>
+                                <button id="delete" type="button" class="btn btn-outline-danger">Delete Menu</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
+        <div id="toast"></div>
     </div>
 </body>

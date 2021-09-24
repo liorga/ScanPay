@@ -45,6 +45,9 @@ $(document).ready(() => {
       $.post($('#register_form').attr('action'), $('#register_form').serialize(), () => {
         $('.form-toggle').click();
         $('.form-panel.two').css('background', '#FFD700');
+        const toast = document.getElementById('toast');
+        toast.className = 'show';
+        setTimeout(() => { toast.className = toast.className.replace('show', ''); }, 3000);
       }, 'html')
         .fail((err) => {
           if (err.status === 400) {
