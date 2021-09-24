@@ -60,7 +60,6 @@ $(document).ready(() => {
         },
         'html',
       ).fail((err) => {
-        console.log(err.status);
         if (err.status === 409) {
           $.ajax({
             url: '/api/menu',

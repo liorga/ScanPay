@@ -35,15 +35,13 @@ router.post('/', verify, async (req, res) => {
       owner: user.email,
     });
     if (menuExist) {
-      //console.log(menuExist);
       return res
         .status(409)
-        .send('menu alrady exsits cant post need to update');
+        .send('menu already exist cant post need to update');
     }
     menu = await menu.save();
     return res.send(menu);
   } catch (err) {
-    console.log(err.message);
     return res.status(400).send(err);
   }
 });
@@ -69,7 +67,6 @@ router.put('/', verify, async (req, res) => {
     );
     return res.send(menu);
   } catch (err) {
-    console.log(err);
     return res.status(400).send(err);
   }
 });
