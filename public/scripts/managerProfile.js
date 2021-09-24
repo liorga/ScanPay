@@ -57,7 +57,7 @@ $(document).ready(() => {
       url: '/api/menu',
       type: 'DELETE',
       success: () => {
-        $('.input-group.row.m-1').remove();
+        $('#menu_form .input-group.row.m-1').remove();
         showToast('Menu deleted');
       },
       error: () => {
