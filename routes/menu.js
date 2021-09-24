@@ -10,8 +10,14 @@ router.get('/', verify, async (req, res) => {
   const user = await User.findOne({
     _id: jwt.decode(req.cookies['auth-token']).id,
   });
-  const menu = await Menu.findOne({ owner: user.email });
-  res.send(menu ? menu.items : null);
+  if (user.userType === 'manager') {
+    const menu = await Menu.findOne({ owner: user.email });
+    res.send(menu ? menu.items : null);
+  }
+  if (user.userType === 'worker') {
+    const menu = await Menu.findOne({});
+    res.send(menu ? menu.items : null);
+  }
 });
 
 router.post('/', verify, async (req, res) => {
@@ -63,7 +69,7 @@ router.put('/', verify, async (req, res) => {
       { items: data },
       {
         new: true,
-      },
+      }
     );
     return res.send(menu);
   } catch (err) {

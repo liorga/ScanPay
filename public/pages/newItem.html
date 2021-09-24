@@ -18,20 +18,25 @@
         </div>
 
         <form id="submit_form" method="post" action="/api/menu">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div id="inputFormRow">
-                        <div class="input-group mb-3">
-                            <input type="text" name="name" class="form-control m-input" placeholder="Enter item"
-                                autocomplete="off">
-                            <input type="number" name="price" class="form-control m-input" placeholder="Enter price"
-                                autocomplete="off">
-                            <div class="input-group-append">
-                                <button id="removeRow" type="button" class="btn btn-danger">Remove</button>
-                            </div>
-                        </div>
-                    </div>
-
+            <table class="table" id="myTable">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Quantity</th>
+                 
+                  </tr>
+                </thead>
+                <tbody>  
+                  <tr>
+                    <th scope="row"></th>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+                </table>
                     <div id="newRow"></div>
                     <button id="addRow" type="button" class="btn btn-info">Add Row</button>
                     <button id="submit" type="button" class="btn btn-info">Submit</button>
@@ -67,6 +72,25 @@
             console.log(arr);
             $.post($("#submit_form").attr('action'), arr);
         });
+
+        async function getMenu() {
+            try{
+                const response = await fetch('/api/menu');
+                const data = await response.json();
+                console.log(data);
+            }catch(err){
+                console.log(err.message);
+            }
+        }
+        getMenu();
+        // $(document).ready(() => {
+        //     $.get('/api/menu', (data, status) => {
+        //         if (status === 'success') {
+        //         // data.forEach((e) => $('#myTable').append(newItem(e.name, e.price)));
+        //         console.log(JSON.stringify(data));
+        //         }
+        //     });
+        // })
     </script>
 </body>
 
