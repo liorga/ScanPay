@@ -46,7 +46,7 @@ router.post('/login', async (req, res) => {
 
   const token = jwt.sign({ id: user._id }, config.get('jwtPrivateKey'));
 
-  return res.cookie('auth-token', token).send();
+  return res.cookie('auth-token', token).send(user.name);
 });
 
 module.exports = router;

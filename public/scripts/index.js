@@ -28,7 +28,8 @@ $(document).ready(() => {
 
   $('#login_form').on('submit', (e) => {
     e.preventDefault();
-    $.post($(e.target).attr('action'), $(e.target).serialize(), () => {
+    $.post($(e.target).attr('action'), $(e.target).serialize(), (name) => {
+      localStorage.setItem('username', name);
       window.location.href = 'profile';
     }, 'html')
       .fail((err) => {
