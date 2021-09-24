@@ -17,13 +17,21 @@ function newItem(name = '', price = '') {
           </div>`;
 }
 
-function newWorker() {
-  return `<div class="input-group row m-1">
-            <input type="email" name="email" class="form-control w-50" placeholder="Worker's email address" required="required">
+function newWorker(mail) {
+  if (mail) {
+    return `<div class="input-group row m-1">
+            <input type="email" name="email" class="form-control w-50" placeholder="Worker's email address" disabled="disabled" value=${mail}>
             <div class="input-group-append w-25">
-                <button id="addWorker" type="button" class="btn btn-outline-success">Add</button>
+                <button id="removeWorker" type="button" class="btn btn-outline-danger">Remove</button>
             </div>
           </div>`;
+  }
+  return `<div class="input-group row m-1">
+    <input type="email" name="email" class="form-control w-50" placeholder="Worker's email address" required="required">
+    <div class="input-group-append w-25">
+        <button id="addWorker" type="button" class="btn btn-outline-success">Add</button>
+    </div>
+  </div>`;
 }
 
 $(document).ready(() => {
@@ -32,6 +40,15 @@ $(document).ready(() => {
       data.forEach((e) => $('#menu_form').append(newItem(e.name, e.price)));
     }
   });
+
+  $.get('/api/user/workers', (data, status) => {
+    if (status === 'success' && data.length > 0) {
+      data.forEach((e) => $('#workers').append(newWorker(e)));
+    }
+    $('#workers').append(newWorker());
+  });
+
+  $('#name_placeholder')[0].innerText = localStorage.getItem('username');
 
   $('#logout').on('click', () => {
     document.cookie = 'auth-token=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
@@ -115,6 +132,17 @@ $(document).ready(() => {
   });
 
   $(document).on('click', '#removeWorker', (e) => {
-    e.target.parentElement.parentElement.remove();
+    $.ajax({
+      url: '/api/user/worker',
+      type: 'DELETE',
+      data: { email: $(e.target.parentElement).prev().val() },
+      success: () => {
+        e.target.parentElement.parentElement.remove();
+        showToast('Worker removed');
+      },
+      error: () => {
+        showToast('Cant remove the worker');
+      },
+    });
   });
 });
