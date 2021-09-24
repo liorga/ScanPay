@@ -23,6 +23,7 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
   const data = JSON.parse(req.body.items);
   const { error } = validate(data);
+
   if (error) return res.status(400).send(error.details[0].message);
 
   let order = new Order({

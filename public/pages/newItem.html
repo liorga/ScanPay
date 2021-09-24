@@ -52,14 +52,14 @@
       });
 
       //submit form
-      const order = [];
+      let order = [];
 
       $('#submit').click(function () {
         $('input[name="name"]').each(function getItems() {
           order.push({
             name: $(this).val(),
             price: $(this).parent().next().children()[0].value,
-            qty: $(this).parent().next().next().children()[0].value,
+            quantity: $(this).parent().next().next().children()[0].value,
           });
         });
 
@@ -76,6 +76,8 @@
           //showToast('Error with sanding the order');
           console.log('order failed');
         });
+
+        order = [];
       });
 
       async function getMenu() {

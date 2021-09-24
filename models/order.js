@@ -33,7 +33,7 @@ function validateOrder(order) {
       .items({
         name: Joi.string().min(1).max(255).required(),
         price: Joi.number().min(0).max(1000).required(),
-        qty: Joi.number().min(0).max(100).required(),
+        quantity: Joi.number().min(0).max(100).required(),
       }),
   });
 
