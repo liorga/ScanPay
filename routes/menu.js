@@ -15,7 +15,8 @@ router.get('/', verify, async (req, res) => {
     res.send(menu ? menu.items : null);
   }
   if (user.userType === 'worker') {
-    const menu = await Menu.findOne({});
+    const boss = await User.findOne({ workers: user._id });
+    const menu = await Menu.findOne({ owner: boss.email });
     res.send(menu ? menu.items : null);
   }
 });
@@ -69,7 +70,7 @@ router.put('/', verify, async (req, res) => {
       { items: data },
       {
         new: true,
-      }
+      },
     );
     return res.send(menu);
   } catch (err) {
