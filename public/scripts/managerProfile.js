@@ -2,7 +2,9 @@ function showToast(text) {
   const toast = document.getElementById('toast');
   toast.className = 'show';
   toast.innerText = text;
-  setTimeout(() => { toast.className = toast.className.replace('show', ''); }, 3000);
+  setTimeout(() => {
+    toast.className = toast.className.replace('show', '');
+  }, 3000);
 }
 
 function newItem(name = '', price = '') {
@@ -50,12 +52,30 @@ $(document).ready(() => {
         });
       });
 
-      $.post('/api/menu', { items: JSON.stringify(menu) }, () => {
-        showToast('Menu saved');
-      }, 'html')
-        .fail(() => {
-          showToast('Error with saving the menu');
-        });
+      $.post(
+        '/api/menu',
+        { items: JSON.stringify(menu) },
+        () => {
+          showToast('Menu saved');
+        },
+        'html',
+      ).fail((err) => {
+        console.log(err.status);
+        if (err.status === 409) {
+          $.ajax({
+            url: '/api/menu',
+            data: { items: JSON.stringify(menu) },
+            type: 'PUT',
+            success: () => {
+              showToast('Menu updated');
+            },
+            error: () => {
+              showToast('Cant update the menu');
+            },
+          });
+        }
+        showToast('Error with saving the menu');
+      });
     } else {
       $('#menu_form')[0].reportValidity();
     }
