@@ -16,8 +16,12 @@ router.get('/', verify, async (req, res) => {
   }
   if (user.userType === 'worker') {
     const boss = await User.findOne({ workers: user._id });
-    const menu = await Menu.findOne({ owner: boss.email });
-    res.send(menu ? menu.items : null);
+    if (boss) {
+      const menu = await Menu.findOne({ owner: boss.email });
+      res.send(menu ? menu.items : null);
+    } else {
+      res.send(null);
+    }
   }
 });
 
