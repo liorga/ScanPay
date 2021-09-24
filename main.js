@@ -7,6 +7,13 @@ const { urlencoded } = require('body-parser');
 const app = express();
 require('./services/db')();
 
+const port = process.env.PORT || config.get('port');
+const io = require('socket.io')(app.listen(port, () => console.log(`Listening on port ${port}...`)));
+
+io.on('connection', (socket) => {
+  socket.emit('message', 'Hello World');
+});
+
 const authRoute = require('./routes/auth');
 const ordersRoutes = require('./routes/orders');
 const usersRoute = require('./routes/users');
@@ -34,9 +41,13 @@ app.get('/', (req, res) => {
   }
 });
 
+app.get('/payment', (req, res) => {
+  res.sendFile(path.resolve('./public/pages/payment.html'));
+});
+
 app.get('/newItem', (req, res) => {
   res.sendFile(path.resolve('./public/pages/newItem.html'));
 });
 
-const port = process.env.PORT || config.get('port');
-app.listen(port, () => console.log(`Listening on port ${port}...`));
+// const port = process.env.PORT || config.get('port');
+// app.listen(port, () => console.log(`Listening on port ${port}...`));
