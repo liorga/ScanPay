@@ -98,7 +98,7 @@ router.delete('/', verify, async (req, res) => {
   const order = await Order.findOneAndRemove(req.body.orderName);
 
   if (!order) {
-    return res.status(404).send('The order with the ID was not found.');
+    return res.status(404).send('The order with the name was not found.');
   }
 
   return res.send(order);
