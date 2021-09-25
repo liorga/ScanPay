@@ -2,28 +2,31 @@ const Joi = require('joi');
 const mongoose = require('mongoose');
 
 const orderSchema = new mongoose.Schema({
-  items: [
-    {
-      name: {
-        type: String,
-        required: true,
-        minlength: 1,
-        maxlength: 255,
-      },
-      price: {
-        type: Number,
-        required: true,
-        min: 0,
-        max: 1000,
-      },
-      quantity: {
-        type: Number,
-        min: 0,
-        max: 100,
-        default: 0,
-      },
+  items: [{
+    name: {
+      type: String,
+      required: true,
+      minlength: 1,
+      maxlength: 255,
     },
-  ],
+    price: {
+      type: Number,
+      required: true,
+      min: 0,
+      max: 1000,
+    },
+    quantity: {
+      type: Number,
+      min: 0,
+      max: 100,
+      default: 0,
+    },
+  }],
+
+  isPaid: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 function validateOrder(order) {

@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 const express = require('express');
 
 const { Order, validate } = require('../models/order');
@@ -28,6 +29,7 @@ router.post('/', async (req, res) => {
 
   let order = new Order({
     items: data,
+    isPaid: false,
   });
   order = await order.save();
 

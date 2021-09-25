@@ -8,7 +8,7 @@ function showToast(text) {
 }
 $(document).ready(() => {
   // remove row
-  $(document).on('click', '#removeRow', function () {
+  $(document).on('click', '#removeRow', () => {
     $(this).closest('#inputFormRow').remove();
   });
 
@@ -62,6 +62,7 @@ $(document).ready(() => {
                 </tr>
               `));
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.log(err.message);
     }
   }
