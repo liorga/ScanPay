@@ -25,7 +25,7 @@ router.get('/:name', verify, async (req, res) => {
     _id: jwt.decode(req.cookies['auth-token']).id,
   });
 
-  if (user.userType !== 'worker') return sendErrorPage(403, 'Forbbiden User', res);
+  if (user.userType !== 'worker') return sendErrorPage(403, 'Forbidden User', res);
 
   const order = await Order.findById(req.params.name);
 
@@ -41,7 +41,7 @@ router.post('/', verify, async (req, res) => {
     _id: jwt.decode(req.cookies['auth-token']).id,
   });
 
-  if (user.userType !== 'worker') return sendErrorPage(403, 'Forbbiden User', res);
+  if (user.userType !== 'worker') return sendErrorPage(403, 'Forbidden User', res);
 
   const data = JSON.parse(req.body.items);
   const { error } = validate(data);
@@ -68,7 +68,7 @@ router.put('/', verify, async (req, res) => {
     _id: jwt.decode(req.cookies['auth-token']).id,
   });
 
-  if (user.userType !== 'worker') return sendErrorPage(403, 'Forbbiden User', res);
+  if (user.userType !== 'worker') return sendErrorPage(403, 'Forbidden User', res);
 
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
@@ -89,7 +89,7 @@ router.delete('/:name', verify, async (req, res) => {
     _id: jwt.decode(req.cookies['auth-token']).id,
   });
 
-  if (user.userType !== 'worker') return sendErrorPage(403, 'Forbbiden User', res);
+  if (user.userType !== 'worker') return sendErrorPage(403, 'Forbidden User', res);
   const order = await Order.findOneAndRemove(req.params.name);
 
   if (!order) {
