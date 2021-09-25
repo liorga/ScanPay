@@ -12,10 +12,8 @@ $(document).ready(() => {
       data.forEach((order) => {
         order.items.forEach((item) => {
           $('#orders').append(`
-
-
               <tr>
-                  order
+
                   <td>
                       <input type="text" class="w-5 " name="name" disabled value=${item.name}>
                   </td>
