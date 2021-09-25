@@ -54,5 +54,12 @@ $(document).ready(() => {
     window.location.href = `profile/editOrder/${$(e.target).parent().prev()[0].innerText}`;
   });
 
+  $(document).on('click', '#closeOrder', (e) => {
+    $('#qrcode').empty();
+    // eslint-disable-next-line
+    new QRCode(document.getElementById('qrcode'), 'https://webisora.com');
+    $('#myModal').modal('show');
+  });
+
   getMenu();
 });

@@ -41,7 +41,7 @@ app.get('/', (req, res) => {
   }
 });
 
-app.get('/payment', (req, res) => {
+app.get('/checkout', (req, res) => {
   res.sendFile(path.resolve('./public/pages/payment.html'));
 });
 

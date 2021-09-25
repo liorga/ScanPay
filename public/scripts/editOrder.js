@@ -33,6 +33,8 @@ async function getOrder() {
 $(document).ready(() => {
   getOrder();
 
+  $('#cancel').click(() => { window.location.href = '/profile'; });
+
   $('#submit').click(() => {
     const order = [];
     $('input[name="name"]').each(function getItems() {
