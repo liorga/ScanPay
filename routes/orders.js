@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
   const orders = await Order.find();
-
+  console.log(orders);
   res.send(orders);
 });
 
