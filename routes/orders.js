@@ -27,9 +27,10 @@ router.get('/:name', verify, async (req, res) => {
 
   if (user.userType !== 'worker') return sendErrorPage(403, 'Forbidden User', res);
 
-  const order = await Order.findOne({ orderName: req.params.name });
+  const order = await Order.findOne({ orderName: req.params.name },
+    { orderName: 1, items: 1, _id: 0 });
   if (!order) {
-    return res.status(404).send('The order with the ID was not found.');
+    return sendErrorPage(404, 'The order not found', res);
   }
 
   return res.send(order);
@@ -70,12 +71,15 @@ router.put('/', verify, async (req, res) => {
 
   if (user.userType !== 'worker') return sendErrorPage(403, 'Forbidden User', res);
 
+  req.body.items = JSON.parse(req.body.items);
+  req.body.items = req.body.items.filter((e) => e.quantity !== '0');
   const { error } = validate(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
 
-  const order = await Order.updateOne(req.params.name, req.params.items, {
-    new: true,
-  });
+  if (error) return res.status(400).send(error.details[0].message);
+  if (req.body.items.filter((e) => e.quantity !== '0').length === 0) return res.status(400).send('You need at least one item');
+
+  const order = await Order.updateOne({ orderName: req.body.orderName },
+    { items: req.body.items }, { new: true });
 
   if (!order) {
     return res.status(404).send('The order with the ID was not found.');

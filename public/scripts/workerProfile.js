@@ -47,5 +47,10 @@ $(document).ready(() => {
       },
     });
   });
+
+  $(document).on('click', '#editOrder', (e) => {
+    window.location.href = `profile/editOrder/${$(e.target).parent().prev()[0].innerText}`;
+  });
+
   getMenu();
 });

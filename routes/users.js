@@ -2,6 +2,7 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const path = require('path');
 const { User } = require('../models/user');
+const { Order } = require('../models/order');
 const sendErrorPage = require('../services/utils');
 
 const router = express.Router();
@@ -27,9 +28,19 @@ router.get('/', verify, async (req, res) => {
 
 router.get('/newOrder', verify, async (req, res) => {
   const user = await User.findOne({ _id: jwt.decode(req.cookies['auth-token']).id });
-  if (user.userType !== 'worker') return res.status(403).send('Must be a worker');
+  if (user.userType !== 'worker') return sendErrorPage(403, 'Must be a worker', res);
 
   return res.sendFile(path.resolve('./public/pages/newOrder.html'));
+});
+
+router.get('/editOrder/:name', verify, async (req, res) => {
+  const user = await User.findOne({ _id: jwt.decode(req.cookies['auth-token']).id });
+  if (user.userType !== 'worker') return sendErrorPage(403, 'Must be a worker', res);
+
+  const order = await Order.findOne({ orderName: req.params.name });
+  if (!order) return sendErrorPage(404, 'Order not found', res);
+
+  return res.sendFile(path.resolve('./public/pages/editOrder.html'));
 });
 
 router.get('/workers', verify, async (req, res) => {
