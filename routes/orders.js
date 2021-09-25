@@ -13,7 +13,7 @@ router.get('/', verify, async (req, res) => {
     _id: jwt.decode(req.cookies['auth-token']).id,
   });
 
-  if (user.userType !== 'worker') return sendErrorPage(403, 'Forbbiden User', res);
+  if (user.userType !== 'worker') return sendErrorPage(403, 'Forbidden User', res);
 
   const orders = await Order.find();
 
@@ -43,8 +43,9 @@ router.post('/', verify, async (req, res) => {
 
   if (user.userType !== 'worker') return sendErrorPage(403, 'Forbidden User', res);
 
-  const data = JSON.parse(req.body.items);
-  const { error } = validate(data);
+  req.body.items = JSON.parse(req.body.items);
+  req.body.items = req.body.items.filter((e) => e.quantity !== '0');
+  const { error } = validate(req.body);
 
   if (error) return res.status(400).send(error.details[0].message);
   if ((req.body.items.filter((e) => e.quantity !== '0').length === 0)) return res.status(400).send('You need at least one item');
@@ -55,10 +56,12 @@ router.post('/', verify, async (req, res) => {
     isPaid: false,
   });
 
+  console.log(order);
   try {
     order = await order.save();
     return res.send(order);
   } catch (err) {
+    console.log(err);
     return res.status(409).send('order name already exists');
   }
 });
