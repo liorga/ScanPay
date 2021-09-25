@@ -31,9 +31,9 @@ router.post('/', verify, async (req, res) => {
     const user = await User.findOne({
       _id: jwt.decode(req.cookies['auth-token']).id,
     });
-    if (user.userType !== 'manager') {
-      return res.status(403).send('Must be a manager');
-    }
+
+    if (user.userType !== 'manager') return res.status(403).send('Must be a manager');
+
     const { error } = validate(data, user.email);
     if (error) return res.status(400).send(error.details[0].message);
 
@@ -63,9 +63,8 @@ router.put('/', verify, async (req, res) => {
     const user = await User.findOne({
       _id: jwt.decode(req.cookies['auth-token']).id,
     });
-    if (user.userType !== 'manager') {
-      return res.status(403).send('Must be a manager');
-    }
+    if (user.userType !== 'manager') return res.status(403).send('Must be a manager');
+
     const { error } = validate(data, user.email);
     if (error) return res.status(400).send(error.details[0].message);
 

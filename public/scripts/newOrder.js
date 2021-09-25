@@ -32,6 +32,8 @@ async function getMenu() {
 $(document).ready(() => {
   getMenu();
 
+  $('#cancel').click(() => { window.location.href = '/profile'; });
+
   $('#submit').click(() => {
     if ($('#order_form')[0].checkValidity()) {
       const order = [];

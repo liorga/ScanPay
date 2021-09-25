@@ -33,6 +33,8 @@ $(document).ready(() => {
     document.cookie = 'auth-token=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
   });
 
+  $('#name_placeholder')[0].innerText = localStorage.getItem('username');
+
   $(document).on('click', '#deleteOrder', (e) => {
     $.ajax({
       url: '/api/order',

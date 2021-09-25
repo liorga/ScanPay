@@ -45,7 +45,7 @@ router.get('/editOrder/:name', verify, async (req, res) => {
 
 router.get('/workers', verify, async (req, res) => {
   const user = await User.findOne({ _id: jwt.decode(req.cookies['auth-token']).id });
-  if (user.userType !== 'manager') return res.status(403).send('Must be a manager');
+  if (user.userType !== 'manager') return sendErrorPage(403, 'Must be a manager', res);
 
   const workers = [];
   for (let i = 0; i < user.workers.length; i += 1) {
@@ -60,7 +60,7 @@ router.get('/workers', verify, async (req, res) => {
 
 router.post('/worker', verify, async (req, res) => {
   const user = await User.findOne({ _id: jwt.decode(req.cookies['auth-token']).id });
-  if (user.userType !== 'manager') return res.status(403).send('Must be a manager');
+  if (user.userType !== 'manager') return sendErrorPage(403, 'Must be a manager', res);
 
   const worker = await User.findOne({ email: req.body.email });
   if (!worker || worker.userType !== 'worker') return res.status(404).send('Worker not found');
@@ -76,7 +76,7 @@ router.post('/worker', verify, async (req, res) => {
 
 router.delete('/worker', verify, async (req, res) => {
   const user = await User.findOne({ _id: jwt.decode(req.cookies['auth-token']).id });
-  if (user.userType !== 'manager') return res.status(403).send('Must be a manager');
+  if (user.userType !== 'manager') return sendErrorPage(403, 'Must be a manager', res);
 
   const worker = await User.findOne({ email: req.body.email });
   if (!worker || worker.userType !== 'worker') return res.status(404).send('Worker not found');
