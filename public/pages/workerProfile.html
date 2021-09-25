@@ -16,7 +16,7 @@
     <script src="/scripts/workerProfile.js"></script>
 </head>
 
-<body>
+<body style="height: 100vh; max-height: 100vh; overflow: auto;">
     <div class="sidebar-container">
         <div class="sidebar-logo">
             ScanPay
@@ -42,10 +42,12 @@
         </ul>
     </div>
 
-    <div class="container-fluid col-md-5 p-0 h-100">
-        <div id="orders" class="jumbotron pt-4 px-3" style="height: 90%; overflow: auto;">
-            <div class="input-group mb-3">
-                <span class="input-group-text">Orders Management</span>
+    <div class="container-fluid col-md-8 h-100">
+        <div class="p-5">
+            <div id="orders" class="jumbotron pt-4" style="height: 90%; overflow: auto;">
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Orders Management</span>
+                </div>
             </div>
         </div>
     </div>
