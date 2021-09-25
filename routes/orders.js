@@ -1,5 +1,6 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
+const url = require('url');
 
 const { User } = require('../models/user');
 const { Order, validate } = require('../models/order');
@@ -9,6 +10,8 @@ const router = express.Router();
 const verify = require('./verifyToken');
 
 router.get('/', verify, async (req, res) => {
+  const queryObject = url.parse(req.url, true).query;
+  console.log(queryObject);
   const user = await User.findOne({
     _id: jwt.decode(req.cookies['auth-token']).id,
   });
@@ -21,6 +24,7 @@ router.get('/', verify, async (req, res) => {
 });
 
 router.get('/:name', verify, async (req, res) => {
+
   const user = await User.findOne({
     _id: jwt.decode(req.cookies['auth-token']).id,
   });
@@ -85,13 +89,13 @@ router.put('/', verify, async (req, res) => {
   return res.send(order);
 });
 
-router.delete('/:name', verify, async (req, res) => {
+router.delete('/', verify, async (req, res) => {
   const user = await User.findOne({
     _id: jwt.decode(req.cookies['auth-token']).id,
   });
 
   if (user.userType !== 'worker') return sendErrorPage(403, 'Forbidden User', res);
-  const order = await Order.findOneAndRemove(req.params.name);
+  const order = await Order.findOneAndRemove(req.body.orderName);
 
   if (!order) {
     return res.status(404).send('The order with the ID was not found.');
