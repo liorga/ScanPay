@@ -2,6 +2,14 @@ const Joi = require('joi');
 const mongoose = require('mongoose');
 
 const orderSchema = new mongoose.Schema({
+  orderName: {
+    type: String,
+    required: true,
+    minlength: 1,
+    maxlength: 255,
+    unique: true,
+  },
+
   items: [{
     name: {
       type: String,
@@ -31,6 +39,7 @@ const orderSchema = new mongoose.Schema({
 
 function validateOrder(order) {
   const schema = Joi.object({
+    orderName: Joi.string().min(1).max(255).required(),
     items: Joi.array()
       .required()
       .items({
@@ -40,7 +49,7 @@ function validateOrder(order) {
       }),
   });
 
-  return schema.validate({ items: order });
+  return schema.validate(order);
 }
 
 exports.validate = validateOrder;

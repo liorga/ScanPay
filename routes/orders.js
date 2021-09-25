@@ -47,14 +47,20 @@ router.post('/', verify, async (req, res) => {
   const { error } = validate(data);
 
   if (error) return res.status(400).send(error.details[0].message);
+  if ((req.body.items.filter((e) => e.quantity !== '0').length === 0)) return res.status(400).send('You need at least one item');
 
   let order = new Order({
-    items: data,
+    orderName: req.body.orderName,
+    items: req.body.items,
     isPaid: false,
   });
-  order = await order.save();
 
-  return res.send(order);
+  try {
+    order = await order.save();
+    return res.send(order);
+  } catch (err) {
+    return res.status(409).send('order name already exists');
+  }
 });
 
 router.put('/', verify, async (req, res) => {
