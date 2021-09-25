@@ -17,7 +17,7 @@ io.on('connection', (socket) => {
 const authRoute = require('./routes/auth');
 const ordersRoutes = require('./routes/orders');
 const usersRoute = require('./routes/users');
-const menu = require('./routes/menu');
+const menusRoute = require('./routes/menus');
 // const verify = require('./routes/verifyToken');
 
 app.use(express.json());
@@ -27,7 +27,7 @@ app.use(express.static(path.join(__dirname, '/public')));
 
 app.use('/api/user', authRoute);
 app.use('/api/orders', ordersRoutes);
-app.use('/api/menu', menu);
+app.use('/api/menu', menusRoute);
 app.use('/api/user', usersRoute);
 app.use('/profile', usersRoute);
 
@@ -43,10 +43,6 @@ app.get('/', (req, res) => {
 
 app.get('/payment', (req, res) => {
   res.sendFile(path.resolve('./public/pages/payment.html'));
-});
-
-app.get('/newItem', (req, res) => {
-  res.sendFile(path.resolve('./public/pages/newItem.html'));
 });
 
 // const port = process.env.PORT || config.get('port');

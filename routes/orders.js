@@ -1,4 +1,3 @@
-/* eslint-disable consistent-return */
 const express = require('express');
 
 const { Order, validate } = require('../models/order');
@@ -33,7 +32,7 @@ router.post('/', async (req, res) => {
   });
   order = await order.save();
 
-  res.send(order);
+  return res.send(order);
 });
 
 router.put('/:id', async (req, res) => {

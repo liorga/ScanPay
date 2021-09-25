@@ -25,6 +25,10 @@ router.get('/', verify, async (req, res) => {
   }
 });
 
+router.get('/newOrder', verify, (req, res) => {
+  res.sendFile(path.resolve('./public/pages/newOrder.html'));
+});
+
 router.get('/workers', verify, async (req, res) => {
   const user = await User.findOne({ _id: jwt.decode(req.cookies['auth-token']).id });
   if (user.userType !== 'manager') return res.status(403).send('Must be a manager');
