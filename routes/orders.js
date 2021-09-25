@@ -1,16 +1,32 @@
 const express = require('express');
+const jwt = require('jsonwebtoken');
 
+const { User } = require('../models/user');
 const { Order, validate } = require('../models/order');
+const sendErrorPage = require('../services/utils');
 
 const router = express.Router();
+const verify = require('./verifyToken');
 
-router.get('/', async (req, res) => {
+router.get('/', verify, async (req, res) => {
+  const user = await User.findOne({
+    _id: jwt.decode(req.cookies['auth-token']).id,
+  });
+
+  if (user.userType !== 'worker') return sendErrorPage(403, 'Forbbiden User', res);
+
   const orders = await Order.find();
   console.log(orders);
-  res.send(orders);
+  return res.send(orders);
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:name', verify, async (req, res) => {
+  const user = await User.findOne({
+    _id: jwt.decode(req.cookies['auth-token']).id,
+  });
+
+  if (user.userType !== 'worker') return sendErrorPage(403, 'Forbbiden User', res);
+
   const order = await Order.findById(req.params.id);
 
   if (!order) {
@@ -20,9 +36,15 @@ router.get('/:id', async (req, res) => {
   return res.send(order);
 });
 
-router.post('/', async (req, res) => {
-  req.body.items = JSON.parse(req.body.items);
-  const { error } = validate(req.body);
+router.post('/', verify, async (req, res) => {
+  const user = await User.findOne({
+    _id: jwt.decode(req.cookies['auth-token']).id,
+  });
+
+  if (user.userType !== 'worker') return sendErrorPage(403, 'Forbbiden User', res);
+
+  const data = JSON.parse(req.body.items);
+  const { error } = validate(data);
 
   if (error) return res.status(400).send(error.details[0].message);
   if ((req.body.items.filter((e) => e.quantity !== '0').length === 0)) return res.status(400).send('You need at least one item');
@@ -41,7 +63,13 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/', verify, async (req, res) => {
+  const user = await User.findOne({
+    _id: jwt.decode(req.cookies['auth-token']).id,
+  });
+
+  if (user.userType !== 'worker') return sendErrorPage(403, 'Forbbiden User', res);
+
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
