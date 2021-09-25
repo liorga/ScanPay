@@ -21,18 +21,24 @@ router.get('/:id', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-  const data = JSON.parse(req.body.items);
-  const { error } = validate(data);
+  req.body.items = JSON.parse(req.body.items);
+  const { error } = validate(req.body);
 
   if (error) return res.status(400).send(error.details[0].message);
+  if ((req.body.items.filter((e) => e.quantity !== '0').length === 0)) return res.status(400).send('You need at least one item');
 
   let order = new Order({
-    items: data,
+    orderName: req.body.orderName,
+    items: req.body.items,
     isPaid: false,
   });
-  order = await order.save();
 
-  return res.send(order);
+  try {
+    order = await order.save();
+    return res.send(order);
+  } catch (err) {
+    return res.status(409).send('order name already exists');
+  }
 });
 
 router.put('/:id', async (req, res) => {
