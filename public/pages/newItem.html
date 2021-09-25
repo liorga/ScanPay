@@ -1,114 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <title>Add Menu</title>
 
-    <link
-      rel="stylesheet"
-      href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-    />
-    <link
-      href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css"
-      rel="stylesheet"
-    />
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/styles/profile.css">
+    <link href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css" rel="stylesheet" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
-  </head>
+    <script src="/scripts/items.js"></script>
+</head>
 
-  <body>
+<body>
     <div class="container" style="max-width: 700px">
-      <div class="text-center" style="margin: 20px 0px 20px 0px">
-        <span class="text-secondary">Add or Remove </span>
-      </div>
-      <form id="order_form">
-        <table class="table" id="myTable">
-          <thead>
-            <tr>
-              <th scope="col">Name</th>
-              <th scope="col">Price</th>
-              <th scope="col">Quantity</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr></tr>
-          </tbody>
-        </table>
-        <div id="newRow"></div>
-        <button id="submit" type="button" class="btn btn-info">Submit</button>
-      </form>
+        <div class="text-center" style="margin: 20px 0px 20px 0px">
+            <span class="text-secondary">Add or Remove </span>
+        </div>
+        <form id="order_form">
+            <table class="table" id="myTable">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr></tr>
+                </tbody>
+            </table>
+            <div id="newRow"></div>
+            <button id="submit" type="button" class="btn btn-info">Submit</button>
+        </form>
+
     </div>
+    <div id="toast"></div>
 
-    <script type="text/javascript">
-      // remove row
-      $(document).on('click', '#removeRow', function () {
-        $(this).closest('#inputFormRow').remove();
-      });
 
-      //submit form
-      let order = [];
+</body>
 
-      $('#submit').click(function () {
-        $('input[name="name"]').each(function getItems() {
-          order.push({
-            name: $(this).val(),
-            price: $(this).parent().next().children()[0].value,
-            quantity: $(this).parent().next().next().children()[0].value,
-          });
-        });
-
-        //console.log(order);
-        $.post(
-          '/api/orders',
-          { items: JSON.stringify(order) },
-          () => {
-            //showToast('order sent');
-            console.log('order sent');
-          },
-          'html'
-        ).fail((err) => {
-          //showToast('Error with sanding the order');
-          console.log('order failed');
-        });
-
-        order = [];
-      });
-
-      async function getMenu() {
-        try {
-          const response = await fetch('/api/menu');
-          const data = await response.json();
-          //console.log(data);
-          data.forEach((item) =>
-            $('#myTable').append(`
-              <tr>
-                  <td>
-                      <input type="text" class="w-5 " name="name" disabled value=${item.name}>
-                  </td>
-
-                  <td>
-                      <input type="text" class="w-5 " name="price" disabled value=${item.price}>
-                  </td>
-
-                  <td>
-              
-                      <input type="number" class="count w-25 p-1" min='0' name="qty" value="0">
-              
-                  </td>
-                </tr>
-              `)
-          );
-        } catch (err) {
-          console.log(err.message);
-        }
-      }
-      getMenu();
-    </script>
-  </body>
 </html>
