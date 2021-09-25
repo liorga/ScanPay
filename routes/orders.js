@@ -16,7 +16,7 @@ router.get('/', verify, async (req, res) => {
   if (user.userType !== 'worker') return sendErrorPage(403, 'Forbbiden User', res);
 
   const orders = await Order.find();
-  console.log(orders);
+
   return res.send(orders);
 });
 
@@ -27,7 +27,7 @@ router.get('/:name', verify, async (req, res) => {
 
   if (user.userType !== 'worker') return sendErrorPage(403, 'Forbbiden User', res);
 
-  const order = await Order.findById(req.params.id);
+  const order = await Order.findById(req.params.name);
 
   if (!order) {
     return res.status(404).send('The order with the ID was not found.');
@@ -67,7 +67,7 @@ router.put('/', verify, async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
-  const order = await Order.findByIdAndUpdate(req.params.id, req.params.items, {
+  const order = await Order.updateOne(req.params.name, req.params.items, {
     new: true,
   });
 
@@ -78,8 +78,13 @@ router.put('/', verify, async (req, res) => {
   return res.send(order);
 });
 
-router.delete('/:id', async (req, res) => {
-  const order = await Order.findByIdAndRemove(req.params.id);
+router.delete('/:name', verify, async (req, res) => {
+  const user = await User.findOne({
+    _id: jwt.decode(req.cookies['auth-token']).id,
+  });
+
+  if (user.userType !== 'worker') return sendErrorPage(403, 'Forbbiden User', res);
+  const order = await Order.findOneAndRemove(req.params.name);
 
   if (!order) {
     return res.status(404).send('The order with the ID was not found.');
