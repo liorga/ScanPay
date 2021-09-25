@@ -8,29 +8,16 @@ $(document).ready(() => {
       const response = await fetch('/api/orders');
       const data = await response.json();
 
-      console.log(data);
       data.forEach((order) => {
-        order.items.forEach((item) => {
-          $('#orders').append(`
-              <tr>
-
-                  <td>
-                      <input type="text" class="w-5 " name="name" disabled value=${item.name}>
-                  </td>
-
-                  <td>
-                      <input type="text" class="w-5 " name="price" disabled value=${item.price}>
-                  </td>
-
-                  <td>
-              
-                      <input type="number" class="count w-5 " min='0' disabled name="qty" value=${item.quantity}>
-              
-                  </td>
-
-                </tr>
-              `);
-        });
+        $('#orders').append(`
+          <div class="input-group mb-3">
+            <span class="input-group-text w-50" id="orderName">${order.orderName}</span>
+            <div class="input-group-append w-50">
+              <button id="editOrder" type="button" class="btn btn-outline-primary">Edit</button>
+              <button id="closeOrder" type="button" class="btn btn-outline-success">Close</button>
+              <button id="deleteOrder" type="button" class="btn btn-outline-danger">Remove</button>
+            </div>
+          </div>`);
       });
     } catch (err) {
       // eslint-disable-next-line no-console

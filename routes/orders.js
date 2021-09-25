@@ -15,7 +15,7 @@ router.get('/', verify, async (req, res) => {
 
   if (user.userType !== 'worker') return sendErrorPage(403, 'Forbidden User', res);
 
-  const orders = await Order.find();
+  const orders = await Order.find({}, { orderName: 1 });
 
   return res.send(orders);
 });
