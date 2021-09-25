@@ -55,12 +55,10 @@ router.post('/', verify, async (req, res) => {
     isPaid: false,
   });
 
-  console.log(order);
   try {
     order = await order.save();
     return res.send(order);
   } catch (err) {
-    console.log(err);
     return res.status(409).send('order name already exists');
   }
 });
