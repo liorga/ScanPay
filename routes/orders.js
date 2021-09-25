@@ -1,6 +1,5 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
-const url = require('url');
 
 const { User } = require('../models/user');
 const { Order, validate } = require('../models/order');
@@ -10,7 +9,6 @@ const router = express.Router();
 const verify = require('./verifyToken');
 
 router.get('/', verify, async (req, res) => {
-
   const user = await User.findOne({
     _id: jwt.decode(req.cookies['auth-token']).id,
   });
