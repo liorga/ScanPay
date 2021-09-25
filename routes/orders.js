@@ -10,8 +10,7 @@ const router = express.Router();
 const verify = require('./verifyToken');
 
 router.get('/', verify, async (req, res) => {
-  const queryObject = url.parse(req.url, true).query;
-  console.log(queryObject);
+
   const user = await User.findOne({
     _id: jwt.decode(req.cookies['auth-token']).id,
   });
@@ -24,7 +23,6 @@ router.get('/', verify, async (req, res) => {
 });
 
 router.get('/:name', verify, async (req, res) => {
-
   const user = await User.findOne({
     _id: jwt.decode(req.cookies['auth-token']).id,
   });
@@ -32,7 +30,6 @@ router.get('/:name', verify, async (req, res) => {
   if (user.userType !== 'worker') return sendErrorPage(403, 'Forbidden User', res);
 
   const order = await Order.findOne({ orderName: req.params.name });
-  console.log(order);
   if (!order) {
     return res.status(404).send('The order with the ID was not found.');
   }
