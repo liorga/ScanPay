@@ -45,12 +45,13 @@ $(document).ready(() => {
       });
 
       $.post(
-        '/api/orders', {
+        '/api/order', {
           orderName: $('#order').val(),
           items: JSON.stringify(order),
         },
         () => {
           showToast('order sent');
+          window.location.href = '/profile';
         },
         'html',
       ).fail((err) => {

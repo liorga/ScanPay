@@ -85,16 +85,16 @@ router.put('/', verify, async (req, res) => {
   return res.send(order);
 });
 
-router.delete('/:name', verify, async (req, res) => {
+router.delete('/', verify, async (req, res) => {
   const user = await User.findOne({
     _id: jwt.decode(req.cookies['auth-token']).id,
   });
 
   if (user.userType !== 'worker') return sendErrorPage(403, 'Forbidden User', res);
-  const order = await Order.findOneAndRemove(req.params.name);
+  const order = await Order.findOneAndRemove(req.body.orderName);
 
   if (!order) {
-    return res.status(404).send('The order with the ID was not found.');
+    return res.status(404).send('The order with the name was not found.');
   }
 
   return res.send(order);
