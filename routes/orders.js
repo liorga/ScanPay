@@ -27,8 +27,8 @@ router.get('/:name', verify, async (req, res) => {
 
   if (user.userType !== 'worker') return sendErrorPage(403, 'Forbidden User', res);
 
-  const order = await Order.findById(req.params.name);
-
+  const order = await Order.findOne({ orderName: req.params.name });
+  console.log(order);
   if (!order) {
     return res.status(404).send('The order with the ID was not found.');
   }
@@ -48,7 +48,7 @@ router.post('/', verify, async (req, res) => {
   const { error } = validate(req.body);
 
   if (error) return res.status(400).send(error.details[0].message);
-  if ((req.body.items.filter((e) => e.quantity !== '0').length === 0)) return res.status(400).send('You need at least one item');
+  if (req.body.items.filter((e) => e.quantity !== '0').length === 0) return res.status(400).send('You need at least one item');
 
   let order = new Order({
     orderName: req.body.orderName,
