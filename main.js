@@ -27,10 +27,10 @@ io.on('connection', (socket) => {
     socket.broadcast.to(oid).emit('user-update', idx);
   });
 
-  socket.on('payment', async (oid, idxs) => {
+  socket.on('payment', async (oid, indexes) => {
     const orderIndex = global.ordersCheckout.findIndex((e) => e._id.toString() === oid);
 
-    idxs.forEach((i) => {
+    indexes.forEach((i) => {
       global.ordersCheckout[orderIndex].items[i].paid = true;
     });
 

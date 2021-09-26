@@ -11,7 +11,7 @@ function getId() {
   return window.location.pathname.split('/').at(-1);
 }
 
-function makeid(length) {
+function makeId(length) {
   let result = '';
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   for (let i = 0; i < length; i += 1) {
@@ -28,7 +28,7 @@ $(document).ready(() => {
   socket.emit('get-data', getId());
 
   if (sessionStorage.getItem('id') === null) {
-    sessionStorage.setItem('id', makeid(15));
+    sessionStorage.setItem('id', makeId(15));
   }
 
   socket.on('data', (data) => {
