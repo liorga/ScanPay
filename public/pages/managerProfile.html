@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/styles/profile.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="/scripts/managerProfile.js"></script>
+</head>
+
+<body style="height: 100vh; max-height: 100vh; overflow: auto;">
+    <div class="sidebar-container">
+        <div class="sidebar-logo">
+            ScanPay
+        </div>
+        <ul class="sidebar-navigation">
+            <li class="header">Management</li>
+            <li>
+                <b>
+                    <a id="name_placeholder" href="#"></a>
+                </b>
+            </li>
+            <li>
+                <a href="/" id="logout">
+                    Logout
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="content-container h-100">
+        <div class="row mw-100 h-100">
+            <div class="container-fluid col-md-5 p-0 h-100">
+                <div class="jumbotron pt-4 px-3" style="height: 90%; overflow: auto;">
+                    <form id="workers">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Workers Management</span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="container-fluid col-md-5 p-0 h-100">
+                <div class="jumbotron pt-4 px-3" style="height: 90%; overflow: auto;">
+                    <form id="menu_form">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Menu</span>
+                            <div class="input-group-append">
+                                <button id="addItem" type="button" class="btn btn-outline-primary">Add Item</button>
+                                <button id="submit" type="button" class="btn btn-outline-success">Save Menu</button>
+                                <button id="delete" type="button" class="btn btn-outline-danger">Delete Menu</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div id="toast"></div>
+    </div>
+</body>

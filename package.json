@@ -1,10 +1,11 @@
 {
   "name": "scanpay",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "scan pay project lior and asa",
+  "main": "main.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node main.js",
+    "dev": "nodemon main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -12,13 +13,29 @@
     "url": "git+https://github.com/liorga/ScanPay.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "lior gal asa klein",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/liorga/ScanPay/issues"
   },
   "homepage": "https://github.com/liorga/ScanPay#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "bcrypt": "^5.0.1",
+    "body-parser": "^1.19.0",
+    "config": "^3.3.6",
+    "cookie-parser": "^1.4.5",
+    "express": "^4.17.1",
+    "fs": "0.0.1-security",
+    "joi": "^17.4.2",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.21",
+    "mongoose": "^6.0.7",
+    "nodemon": "^2.0.12",
+    "socket.io": "^4.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.24.2"
   }
 }

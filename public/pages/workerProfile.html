@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/styles/profile.css">
+
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="/scripts/workerProfile.js"></script>
+</head>
+
+<body style="height: 100vh; max-height: 100vh; overflow: auto;">
+    <div class="sidebar-container">
+        <div class="sidebar-logo">
+            ScanPay
+        </div>
+        <ul class="sidebar-navigation">
+            <li class="header">Orders</li>
+            <li>
+                <a href="/profile/newOrder">
+                    New Order
+                </a>
+            </li>
+            <li class="header">Management</li>
+            <li>
+                <b>
+                    <a id="name_placeholder" href="#"></a>
+                </b>
+            </li>
+            <li>
+                <a href="/" id="logout">
+                    Logout
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="container-fluid col-md-8 h-100">
+        <div class="p-5">
+            <div id="orders" class="jumbotron pt-4" style="height: 90%; overflow: auto;">
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Orders Management</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="myModal" class="modal fade" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Payment QR</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body row align-items-center justify-content-center" id="qrcode">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast"></div>
+</body>

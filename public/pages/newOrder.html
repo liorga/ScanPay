@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Add Menu</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/styles/order.css">
+    <link href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
+    <script src="/scripts/newOrder.js"></script>
+</head>
+
+<body>
+    <div class="container" style="max-width: 700px">
+        <div class="text-center" style="margin: 20px 0px 20px 0px">
+            <span class="text-secondary">Create new order</span>
+        </div>
+        <form id="order_form">
+            <input id="order" type="text" class="form-control" name="ordersName" placeholder="Order's name"
+                required="required">
+            <table class="table" id="myTable">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr></tr>
+                </tbody>
+            </table>
+            <div id="newRow"></div>
+            <button id="submit" type="button" class="btn btn-info">Submit</button>
+            <button id="cancel" type="button" class="btn btn-danger">Cancel</button>
+        </form>
+    </div>
+    <div id="toast"></div>
+</body>
+
+</html>
