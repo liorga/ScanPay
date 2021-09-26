@@ -63,6 +63,7 @@ $(document).ready(() => {
         $('#qrcode').empty();
         // eslint-disable-next-line
         new QRCode(document.getElementById('qrcode'), res);
+        $('#qrurl')[0].innerText = res;
         $('#myModal').modal('show');
       },
       'html',
