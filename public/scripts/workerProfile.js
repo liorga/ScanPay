@@ -30,6 +30,7 @@ async function getMenu() {
 
 $(document).ready(() => {
   $('#logout').on('click', () => {
+    localStorage.removeItem('username');
     document.cookie = 'auth-token=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
   });
 
@@ -44,8 +45,8 @@ $(document).ready(() => {
         $(e.target).parent().parent().remove();
         showToast('Order deleted');
       },
-      error: () => {
-        showToast('Cant delete the order');
+      error: (err) => {
+        showToast(err.responseText);
       },
     });
   });
@@ -55,10 +56,19 @@ $(document).ready(() => {
   });
 
   $(document).on('click', '#closeOrder', (e) => {
-    $('#qrcode').empty();
-    // eslint-disable-next-line
-    new QRCode(document.getElementById('qrcode'), 'https://webisora.com');
-    $('#myModal').modal('show');
+    $.post(
+      '/api/order/close',
+      { orderName: $(e.target).parent().prev()[0].innerText },
+      (res) => {
+        $('#qrcode').empty();
+        // eslint-disable-next-line
+        new QRCode(document.getElementById('qrcode'), res);
+        $('#myModal').modal('show');
+      },
+      'html',
+    ).fail((err) => {
+      showToast(err.responseText);
+    });
   });
 
   getMenu();

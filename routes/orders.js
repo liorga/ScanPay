@@ -92,15 +92,31 @@ router.delete('/', verify, async (req, res) => {
   const user = await User.findOne({
     _id: jwt.decode(req.cookies['auth-token']).id,
   });
-
   if (user.userType !== 'worker') return sendErrorPage(403, 'Forbidden User', res);
-  const order = await Order.findOneAndRemove(req.body.orderName);
 
-  if (!order) {
-    return res.status(404).send('The order with the name was not found.');
+  const orderIsPaid = await Order.findOne({ orderName: req.body.orderName }, { isPaid: 1 });
+  if (!orderIsPaid) return res.status(404).send('Order not found');
+  if (!orderIsPaid.isPaid) return res.status(409).send('Order not paid');
+
+  const order = await Order.findOneAndRemove(req.body.orderName);
+  return res.send(order);
+});
+
+router.post('/close', verify, async (req, res) => {
+  const user = await User.findOne({
+    _id: jwt.decode(req.cookies['auth-token']).id,
+  });
+  if (user.userType !== 'worker') return sendErrorPage(403, 'Forbidden User', res);
+
+  const order = await Order.findOne({ orderName: req.body.orderName });
+  if (!order) return res.status(404).send('Order not found');
+  if (order.isPaid) return res.status(409).send('Order already paid');
+
+  if (!global.ordersCheckout.find((e) => e.orderName === order.orderName)) {
+    global.ordersCheckout.push(order);
   }
 
-  return res.send(order);
+  return res.send(`${req.get('host')}/checkout/${order._id}`);
 });
 
 module.exports = router;

@@ -10,14 +10,26 @@ require('./services/db')();
 const port = process.env.PORT || config.get('port');
 const io = require('socket.io')(app.listen(port, () => console.log(`Listening on port ${port}...`)));
 
+global.ordersCheckout = [];
+
 io.on('connection', (socket) => {
-  socket.emit('message', 'Hello World');
+  socket.on('get-data', (id) => {
+    const order = global.ordersCheckout.find((e) => e._id.toString() === id);
+    socket.join(id);
+    socket.emit('data', order.items);
+  });
+
+  socket.on('update', (id, idx) => {
+    console.log(id, idx);
+    socket.broadcast.to(id).emit('user-update', idx);
+  });
 });
 
 const authRoute = require('./routes/auth');
 const ordersRoutes = require('./routes/orders');
 const usersRoute = require('./routes/users');
 const menusRoute = require('./routes/menus');
+const sendErrorPage = require('./services/utils');
 // const verify = require('./routes/verifyToken');
 
 app.use(express.json());
@@ -41,8 +53,11 @@ app.get('/', (req, res) => {
   }
 });
 
-app.get('/checkout', (req, res) => {
-  res.sendFile(path.resolve('./public/pages/payment.html'));
+app.get('/checkout/:id', (req, res) => {
+  const order = global.ordersCheckout.find((e) => e._id.toString() === req.params.id);
+  if (!order) sendErrorPage(404, 'Not Found', res);
+
+  res.sendFile(path.resolve('./public/pages/checkout.html'));
 });
 
 // const port = process.env.PORT || config.get('port');
