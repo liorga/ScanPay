@@ -1,6 +1,6 @@
 {
   "jwtPrivateKey": "unsecureKey",
-  "db": "mongodb+srv://liorgal:15973lior@cluster0.niksj.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+  "db": "mongodb://localhost/scanpay",
   "port": "3000",
   "requiresAuth": false
 }
