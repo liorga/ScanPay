@@ -24,7 +24,7 @@ let totalPrice = 0;
 
 $(document).ready(() => {
   // eslint-disable-next-line no-undef
-  const socket = io('localhost');
+  const socket = io();
   socket.emit('get-data', getId());
 
   if (sessionStorage.getItem('id') === null) {

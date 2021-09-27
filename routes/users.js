@@ -9,20 +9,24 @@ const router = express.Router();
 const verify = require('./verifyToken');
 
 router.get('/', verify, async (req, res) => {
-  const user = await User.findOne({ _id: jwt.decode(req.cookies['auth-token']).id });
-
-  switch (user.userType) {
-    case 'client':
-      res.sendFile(path.resolve('./public/pages/clientProfile.html'));
-      break;
-    case 'worker':
-      res.sendFile(path.resolve('./public/pages/workerProfile.html'));
-      break;
-    case 'manager':
-      res.sendFile(path.resolve('./public/pages/managerProfile.html'));
-      break;
-    default:
-      sendErrorPage(404, 'Not Found', res);
+  try {
+    const user = await User.findOne({ _id: jwt.decode(req.cookies['auth-token']).id });
+    console.log(user);
+    switch (user.userType) {
+      case 'client':
+        res.sendFile(path.resolve('./public/pages/clientProfile.html'));
+        break;
+      case 'worker':
+        res.sendFile(path.resolve('./public/pages/workerProfile.html'));
+        break;
+      case 'manager':
+        res.sendFile(path.resolve('./public/pages/managerProfile.html'));
+        break;
+      default:
+        sendErrorPage(404, 'Not Found', res);
+    }
+  } catch (error) {
+    console.log(error.message);
   }
 });
 
