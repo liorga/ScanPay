@@ -35,18 +35,22 @@ router.post('/register', async (req, res) => {
 });
 
 router.post('/login', async (req, res) => {
-  const { error } = loginValidation(req.body);
-  if (error) return res.status(400).send('Email or password is incorrect' /* error.details[0].message */);
+  try {
+    const { error } = loginValidation(req.body);
+    if (error) return res.status(400).send('Email or password is incorrect' /* error.details[0].message */);
 
-  const user = await User.findOne({ email: req.body.email });
-  if (!user) return res.status(401).send('Email or password is incorrect');
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) return res.status(401).send('Email or password is incorrect');
 
-  const validPassword = await bcrypt.compare(req.body.password, user.password);
-  if (!validPassword) return res.status(401).send('Email or password is incorrect');
+    const validPassword = await bcrypt.compare(req.body.password, user.password);
+    if (!validPassword) return res.status(401).send('Email or password is incorrect');
 
-  const token = jwt.sign({ id: user._id }, config.get('jwtPrivateKey'));
+    const token = jwt.sign({ id: user._id }, config.get('jwtPrivateKey'));
 
-  return res.cookie('auth-token', token).send(user.name);
+    return res.cookie('auth-token', token).send(user.name);
+  } catch (err) {
+    console.error(err);
+  }
 });
 
 module.exports = router;
