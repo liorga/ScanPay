@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const config = require('config');
 const jwt = require('jsonwebtoken');
 const { User, registerValidation, loginValidation } = require('../models/user');
+const sendErrorPage = require('../services/utils');
 
 router.post('/register', async (req, res) => {
   const conf = req.body.cpassword;
@@ -49,7 +50,7 @@ router.post('/login', async (req, res) => {
 
     return res.cookie('auth-token', token).send(user.name);
   } catch (err) {
-    console.error(err);
+    sendErrorPage(500, err.message, res);
   }
 });
 
