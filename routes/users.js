@@ -11,7 +11,7 @@ const verify = require('./verifyToken');
 router.get('/', verify, async (req, res) => {
   try {
     const user = await User.findOne({ _id: jwt.decode(req.cookies['auth-token']).id });
-
+    console.log(user);
     switch (user.userType) {
       case 'client':
         res.sendFile(path.resolve('./public/pages/clientProfile.html'));
