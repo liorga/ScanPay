@@ -48,7 +48,6 @@ const ordersRoutes = require('./routes/orders');
 const usersRoute = require('./routes/users');
 const menusRoute = require('./routes/menus');
 const sendErrorPage = require('./services/utils');
-// const verify = require('./routes/verifyToken');
 
 app.use(express.json());
 app.use(urlencoded({ extended: false }));
@@ -77,6 +76,3 @@ app.get('/checkout/:id', (req, res) => {
 
   res.sendFile(path.resolve('./public/pages/checkout.html'));
 });
-
-// const port = process.env.PORT || config.get('port');
-// app.listen(port, () => console.log(`Listening on port ${port}...`));
