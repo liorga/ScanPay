@@ -1,6 +1,6 @@
 {
   "jwtPrivateKey": "unsecureKey",
   "db": "mongodb://localhost/scanpay",
-  "port": "3000",
+  "port": "80",
   "requiresAuth": false
 }

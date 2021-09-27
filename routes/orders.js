@@ -113,10 +113,20 @@ router.post('/close', verify, async (req, res) => {
   if (order.isPaid) return res.status(409).send('Order already paid');
 
   if (!global.ordersCheckout.find((e) => e.orderName === order.orderName)) {
-    global.ordersCheckout.push(order);
+    const items = [];
+
+    order.items.forEach((item) => {
+      for (let i = 0; i < item.quantity; i += 1) {
+        items.push({
+          name: item.name, price: item.price, user: null, paid: false,
+        });
+      }
+    });
+
+    global.ordersCheckout.push({ _id: order._id, items });
   }
 
-  return res.send(`${req.get('host')}/checkout/${order._id}`);
+  return res.send(`http://${req.get('host')}/checkout/${order._id}`);
 });
 
 module.exports = router;

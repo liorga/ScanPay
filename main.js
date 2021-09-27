@@ -9,6 +9,7 @@ require('./services/db')();
 
 const port = process.env.PORT || config.get('port');
 const io = require('socket.io')(app.listen(port, () => console.log(`Listening on port ${port}...`)));
+const { Order } = require('./models/order');
 
 global.ordersCheckout = [];
 
@@ -19,9 +20,26 @@ io.on('connection', (socket) => {
     socket.emit('data', order.items);
   });
 
-  socket.on('update', (id, idx) => {
-    console.log(id, idx);
-    socket.broadcast.to(id).emit('user-update', idx);
+  socket.on('update', (oid, idx, uid, selected) => {
+    const orderIndex = global.ordersCheckout.findIndex((e) => e._id.toString() === oid);
+    global.ordersCheckout[orderIndex].items[idx].user = selected ? uid : null;
+
+    socket.broadcast.to(oid).emit('user-update', idx);
+  });
+
+  socket.on('payment', async (oid, indexes) => {
+    const orderIndex = global.ordersCheckout.findIndex((e) => e._id.toString() === oid);
+
+    indexes.forEach((i) => {
+      global.ordersCheckout[orderIndex].items[i].paid = true;
+    });
+
+    if (global.ordersCheckout[orderIndex].items.find((e) => !e.paid) === undefined) {
+      await Order.updateOne({ _id: global.ordersCheckout[orderIndex]._id },
+        { isPaid: true }, { new: true });
+
+      global.ordersCheckout.splice(orderIndex, 1);
+    }
   });
 });
 
@@ -30,7 +48,6 @@ const ordersRoutes = require('./routes/orders');
 const usersRoute = require('./routes/users');
 const menusRoute = require('./routes/menus');
 const sendErrorPage = require('./services/utils');
-// const verify = require('./routes/verifyToken');
 
 app.use(express.json());
 app.use(urlencoded({ extended: false }));
@@ -59,6 +76,3 @@ app.get('/checkout/:id', (req, res) => {
 
   res.sendFile(path.resolve('./public/pages/checkout.html'));
 });
-
-// const port = process.env.PORT || config.get('port');
-// app.listen(port, () => console.log(`Listening on port ${port}...`));

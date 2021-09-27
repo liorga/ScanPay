@@ -8,26 +8,60 @@
   <title>ScanPay</title>
 
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/styles/profile.css">
 
-  <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script src="/scripts/checkout.js"></script>
+
+  <style>
+    html {
+      width: 100%;
+      height: 100%;
+    }
+
+    body {
+      background: linear-gradient(45deg, rgba(66, 183, 245, 0.8) 0%, rgba(66, 245, 189, 0.4) 100%);
+      color: rgba(0, 0, 0, 0.6);
+      font-family: "Roboto", sans-serif;
+      font-size: 14px;
+      line-height: 1.6em;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+  </style>
 </head>
 
-<body>
-  <table class="table table-hover">
-    <thead>
-      <tr>
-        <th scope="col">Item</th>
-        <th scope="col">Price</th>
-        <th scope="col">Select</th>
-      </tr>
-    </thead>
-    <tbody id="items">
-    </tbody>
-  </table>
+<body style="height: 100vh; max-height: 100vh; overflow: hidden">
+  <div class="text-center">
+    <span class="text-danger">Order checkout</span>
+  </div>
+  <div class="jumbotron container mt-5 w-75" style="overflow: auto;">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Item</th>
+          <th scope="col">Price</th>
+          <th scope="col">Select</th>
+        </tr>
+      </thead>
+      <tbody id="items">
+      </tbody>
+    </table>
+    <div class="input-group w-100">
+      <div class="input-group-prepend w-75">
+        <span class="input-group-text w-25">Total Price:</span>
+        <span class="input-group-text w-75" id="totalPrice">0</span>
+      </div>
+      <div class="input-group-append w-25">
+        <button id="pay" type="button" class="btn btn-primary w-100">Payment</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast"></div>
 </body>
 
 </html>
