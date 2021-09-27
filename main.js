@@ -7,7 +7,7 @@ const { urlencoded } = require('body-parser');
 const app = express();
 require('./services/db')();
 
-const port = process.env.MONGODB_URI || config.get('port');
+const port = process.env.PORT || config.get('port');
 const io = require('socket.io')(app.listen(port, () => console.log(`Listening on port ${port}...`)));
 
 global.ordersCheckout = [];
