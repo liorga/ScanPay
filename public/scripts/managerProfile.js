@@ -51,8 +51,17 @@ $(document).ready(() => {
   $('#name_placeholder')[0].innerText = localStorage.getItem('username');
 
   $('#logout').on('click', () => {
-    localStorage.removeItem('username');
-    document.cookie = 'auth-token=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    $.post(
+      'api/user/logout',
+      () => {
+        localStorage.removeItem('username');
+        document.cookie = 'auth-token=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        window.location.href = '/';
+      },
+      'html',
+    ).fail((err) => {
+      showToast(err.responseText);
+    });
   });
 
   $('#addItem').click(() => {

@@ -4,6 +4,7 @@ const config = require('config');
 const jwt = require('jsonwebtoken');
 const { User, registerValidation, loginValidation } = require('../models/user');
 const sendErrorPage = require('../services/utils');
+const verify = require('./verifyToken');
 
 router.post('/register', async (req, res) => {
   const conf = req.body.cpassword;
@@ -46,7 +47,7 @@ router.post('/login', async (req, res) => {
     const validPassword = await bcrypt.compare(req.body.password, user.password);
     if (!validPassword) return res.status(401).send('Email or password is incorrect');
 
-    const online = global.onlineUsers.find((e) => e._id === user._id.toString());
+    const online = global.onlineUsers.find((e) => e === user._id.toString());
     if (online) return res.status(401).send('User already online');
     global.onlineUsers.push(user._id.toString());
 
@@ -55,6 +56,16 @@ router.post('/login', async (req, res) => {
   } catch (err) {
     return sendErrorPage(500, err.message, res);
   }
+});
+
+router.post('/logout', verify, async (req, res) => {
+  const user = await User.findOne({ _id: jwt.decode(req.cookies['auth-token']).id });
+  if (!user) return sendErrorPage(404, 'Not found', res);
+
+  const onlineIndex = global.onlineUsers.findIndex((e) => e === user._id.toString());
+  if (onlineIndex === -1) return res.status(404).send('Not found');
+  global.onlineUsers.splice(onlineIndex, 1);
+  return res.send('ok');
 });
 
 module.exports = router;
