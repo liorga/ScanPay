@@ -26,6 +26,7 @@ router.get('/', verify, async (req, res) => {
 
 router.get('/newOrder', verify, async (req, res) => {
   const user = await User.findOne({ _id: jwt.decode(req.cookies['auth-token']).id });
+  if (!user) return sendErrorPage(404, 'Not found', res);
   if (user.userType !== 'worker') return sendErrorPage(403, 'Must be a worker', res);
 
   return res.sendFile(path.resolve('./public/pages/newOrder.html'));
@@ -33,6 +34,7 @@ router.get('/newOrder', verify, async (req, res) => {
 
 router.get('/editOrder/:name', verify, async (req, res) => {
   const user = await User.findOne({ _id: jwt.decode(req.cookies['auth-token']).id });
+  if (!user) return sendErrorPage(404, 'Not found', res);
   if (user.userType !== 'worker') return sendErrorPage(403, 'Must be a worker', res);
 
   const order = await Order.findOne({ orderName: req.params.name });
@@ -43,6 +45,7 @@ router.get('/editOrder/:name', verify, async (req, res) => {
 
 router.get('/workers', verify, async (req, res) => {
   const user = await User.findOne({ _id: jwt.decode(req.cookies['auth-token']).id });
+  if (!user) return sendErrorPage(404, 'Not found', res);
   if (user.userType !== 'manager') return sendErrorPage(403, 'Must be a manager', res);
 
   const workers = [];
@@ -58,6 +61,7 @@ router.get('/workers', verify, async (req, res) => {
 
 router.post('/worker', verify, async (req, res) => {
   const user = await User.findOne({ _id: jwt.decode(req.cookies['auth-token']).id });
+  if (!user) return sendErrorPage(404, 'Not found', res);
   if (user.userType !== 'manager') return sendErrorPage(403, 'Must be a manager', res);
 
   const worker = await User.findOne({ email: req.body.email });
@@ -74,6 +78,7 @@ router.post('/worker', verify, async (req, res) => {
 
 router.delete('/worker', verify, async (req, res) => {
   const user = await User.findOne({ _id: jwt.decode(req.cookies['auth-token']).id });
+  if (!user) return sendErrorPage(404, 'Not found', res);
   if (user.userType !== 'manager') return sendErrorPage(403, 'Must be a manager', res);
 
   const worker = await User.findOne({ email: req.body.email });

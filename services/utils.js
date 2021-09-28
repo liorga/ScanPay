@@ -6,6 +6,5 @@ module.exports = function sendErrorPage(code, msg, res) {
 
   index = index.replace(/##CODE##/g, `${code}`);
   index = index.replace(/##MSG##/g, `${msg}`);
-  index = index.replace(/##JOKE##/g, `${code}`);
   return res.status(code).send(index);
 };

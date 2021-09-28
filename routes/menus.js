@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const verify = require('./verifyToken');
 const { Menu, validate } = require('../models/menu');
 const { User } = require('../models/user');
+const sendErrorPage = require('../services/utils');
 
 const router = express.Router();
 
@@ -32,6 +33,7 @@ router.post('/', verify, async (req, res) => {
       _id: jwt.decode(req.cookies['auth-token']).id,
     });
 
+    if (!user) return sendErrorPage(404, 'Not found', res);
     if (user.userType !== 'manager') return res.status(403).send('Must be a manager');
 
     const { error } = validate(data, user.email);
@@ -63,6 +65,7 @@ router.put('/', verify, async (req, res) => {
     const user = await User.findOne({
       _id: jwt.decode(req.cookies['auth-token']).id,
     });
+    if (!user) return sendErrorPage(404, 'Not found', res);
     if (user.userType !== 'manager') return res.status(403).send('Must be a manager');
 
     const { error } = validate(data, user.email);
@@ -85,6 +88,7 @@ router.delete('/', verify, async (req, res) => {
   const user = await User.findOne({
     _id: jwt.decode(req.cookies['auth-token']).id,
   });
+  if (!user) return sendErrorPage(404, 'Not found', res);
   const menu = await Menu.findOneAndRemove({ owner: user.email });
 
   if (!menu) {

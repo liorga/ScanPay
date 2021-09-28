@@ -13,6 +13,7 @@ router.get('/', verify, async (req, res) => {
     _id: jwt.decode(req.cookies['auth-token']).id,
   });
 
+  if (!user) return sendErrorPage(404, 'Not found', res);
   if (user.userType !== 'worker') return sendErrorPage(403, 'Forbidden User', res);
 
   const orders = await Order.find({}, { orderName: 1 });
@@ -25,6 +26,7 @@ router.get('/:name', verify, async (req, res) => {
     _id: jwt.decode(req.cookies['auth-token']).id,
   });
 
+  if (!user) return sendErrorPage(404, 'Not found', res);
   if (user.userType !== 'worker') return sendErrorPage(403, 'Forbidden User', res);
 
   const order = await Order.findOne({ orderName: req.params.name },
@@ -41,6 +43,7 @@ router.post('/', verify, async (req, res) => {
     _id: jwt.decode(req.cookies['auth-token']).id,
   });
 
+  if (!user) return sendErrorPage(404, 'Not found', res);
   if (user.userType !== 'worker') return sendErrorPage(403, 'Forbidden User', res);
 
   req.body.items = JSON.parse(req.body.items);
@@ -69,6 +72,7 @@ router.put('/', verify, async (req, res) => {
     _id: jwt.decode(req.cookies['auth-token']).id,
   });
 
+  if (!user) return sendErrorPage(404, 'Not found', res);
   if (user.userType !== 'worker') return sendErrorPage(403, 'Forbidden User', res);
 
   req.body.items = JSON.parse(req.body.items);
@@ -92,6 +96,8 @@ router.delete('/', verify, async (req, res) => {
   const user = await User.findOne({
     _id: jwt.decode(req.cookies['auth-token']).id,
   });
+
+  if (!user) return sendErrorPage(404, 'Not found', res);
   if (user.userType !== 'worker') return sendErrorPage(403, 'Forbidden User', res);
 
   const orderIsPaid = await Order.findOne({ orderName: req.body.orderName }, { isPaid: 1 });
@@ -106,6 +112,8 @@ router.post('/close', verify, async (req, res) => {
   const user = await User.findOne({
     _id: jwt.decode(req.cookies['auth-token']).id,
   });
+
+  if (!user) return sendErrorPage(404, 'Not found', res);
   if (user.userType !== 'worker') return sendErrorPage(403, 'Forbidden User', res);
 
   const order = await Order.findOne({ orderName: req.body.orderName });
