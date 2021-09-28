@@ -46,8 +46,11 @@ router.post('/login', async (req, res) => {
     const validPassword = await bcrypt.compare(req.body.password, user.password);
     if (!validPassword) return res.status(401).send('Email or password is incorrect');
 
-    const token = jwt.sign({ id: user._id }, config.get('jwtPrivateKey'));
+    const online = global.onlineUsers.find((e) => e._id === user._id.toString());
+    if (online) return res.status(401).send('User already online');
+    global.onlineUsers.push(user._id.toString());
 
+    const token = jwt.sign({ id: user._id }, config.get('jwtPrivateKey'));
     return res.cookie('auth-token', token).send(user.name);
   } catch (err) {
     return sendErrorPage(500, err.message, res);

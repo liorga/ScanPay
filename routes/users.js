@@ -56,7 +56,10 @@ router.get('/workers', verify, async (req, res) => {
   const result = [];
   (await Promise.all(workers)).forEach((w) => { result.push(w); });
 
-  return res.send(result);
+  const resultEmails = [];
+  result.forEach((w) => { resultEmails.push(w.email); });
+
+  return res.send(resultEmails);
 });
 
 router.post('/worker', verify, async (req, res) => {

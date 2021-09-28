@@ -12,6 +12,7 @@ const io = require('socket.io')(app.listen(port, () => console.log(`Listening on
 const { Order } = require('./models/order');
 
 global.ordersCheckout = [];
+global.onlineUsers = [];
 
 io.on('connection', (socket) => {
   socket.on('get-data', (id) => {
