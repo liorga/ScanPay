@@ -9,23 +9,18 @@ const router = express.Router();
 const verify = require('./verifyToken');
 
 router.get('/', verify, async (req, res) => {
-  try {
-    const user = await User.findOne({ _id: jwt.decode(req.cookies['auth-token']).id });
-    switch (user.userType) {
-      case 'client':
-        res.sendFile(path.resolve('./public/pages/clientProfile.html'));
-        break;
-      case 'worker':
-        res.sendFile(path.resolve('./public/pages/workerProfile.html'));
-        break;
-      case 'manager':
-        res.sendFile(path.resolve('./public/pages/managerProfile.html'));
-        break;
-      default:
-        sendErrorPage(404, 'Not Found', res);
-    }
-  } catch (error) {
-    sendErrorPage(500, error.message, res);
+  const user = await User.findOne({ _id: jwt.decode(req.cookies['auth-token']).id });
+  if (!user) return sendErrorPage(404, 'not found', res);
+
+  switch (user.userType) {
+    case 'client':
+      return res.sendFile(path.resolve('./public/pages/clientProfile.html'));
+    case 'worker':
+      return res.sendFile(path.resolve('./public/pages/workerProfile.html'));
+    case 'manager':
+      return res.sendFile(path.resolve('./public/pages/managerProfile.html'));
+    default:
+      return sendErrorPage(404, 'Not Found', res);
   }
 });
 
@@ -56,7 +51,7 @@ router.get('/workers', verify, async (req, res) => {
   }
 
   const result = [];
-  (await Promise.all(workers)).forEach((w) => { result.push(w.email); });
+  (await Promise.all(workers)).forEach((w) => { result.push(w); });
 
   return res.send(result);
 });

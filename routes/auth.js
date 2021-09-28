@@ -50,7 +50,7 @@ router.post('/login', async (req, res) => {
 
     return res.cookie('auth-token', token).send(user.name);
   } catch (err) {
-    sendErrorPage(500, err.message, res);
+    return sendErrorPage(500, err.message, res);
   }
 });
 
