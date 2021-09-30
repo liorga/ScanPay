@@ -63,9 +63,7 @@ router.post('/logout', verify, async (req, res) => {
   if (!user) return sendErrorPage(404, 'Not found', res);
 
   const onlineIndex = global.onlineUsers.findIndex((e) => e === user._id.toString());
-  console.log(global.onlineUsers);
-  if (onlineIndex === -1) return res.status(404).send('Not found');
-  global.onlineUsers.splice(onlineIndex, 1);
+  if (onlineIndex !== -1) return global.onlineUsers.splice(onlineIndex, 1);
   return res.send('ok');
 });
 
